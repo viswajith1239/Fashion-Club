@@ -1,0 +1,46 @@
+
+.img-custom{
+    width: 300px;
+    height: 150px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    
+}
+.center{
+    text-align: center;
+    
+}
+.btn:hover{
+    
+    color: black;
+}
+.btn{
+    color:black;
+    margin-bottom: 30px;
+    
+    
+}
+.delete-button {
+    margin-right: 10px; 
+  }
+
+  .radio-button {
+    display: inline-block;
+    width: 14px; /* Adjust the size of the radio button */
+    height: 14px; /* Adjust the size of the radio button */
+    border-radius: 50%; /* Makes it round to resemble a circle */
+    border: 1px solid #999; /* Border color */
+    position: relative;
+    top: 3px; /* Adjust the vertical alignment */
+    margin-right: 5px; /* Adjust the spacing between the radio button and the label text */
+}
+  
+
+
+
+
+
+
+
