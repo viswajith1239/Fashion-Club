@@ -688,108 +688,107 @@
     </script>
 
    
+<script>
+    // Function to fetch and display products based on search, filter, sort, and pagination
+    const fetchProducts = (event,page) => {
 
-    <script>
-        // Function to fetch and display products based on search, filter, sort, and pagination
-        const fetchProducts = (event,page) => {
-            console.log("fetched");
-            // const searchQuery = document.getElementById('searchInput').value;
-            const categoryFilter = $('#categoryFilter').val();
-            const sortOption = $('#sortOptions').val();
-            const currentPage = page||1; // Initial page
-            const limitPerPage = 10; // Number of products per page
-            console.log(currentPage)
+        // const searchQuery = document.getElementById('searchInput').value;
+        const categoryFilter = $('#categoryFilter').val();
+        const sortOption = $('#sortOptions').val();
+        const currentPage = page||1; // Initial page
+        const limitPerPage = 10; // Number of products per page
 
-            const url = `/shopFilter?category=${categoryFilter}&sort=${sortOption}&page=${currentPage}&limit=${limitPerPage};`
-            console.log(url)
 
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function (data) {
-                    console.log(data)
-                    const products = data.products;
-                    const pageInfo = data.pageInfo;
+        const url = `/shopFilter?category=${categoryFilter}&sort=${sortOption}&page=${currentPage}&limit=${limitPerPage};`
+        console.log(url)
 
-                    // Update the product list on the page based on the fetched products
-                    const productGrid = $('.product-grid-3');
-                    productGrid.empty(); // Clear previous products
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function (data) {
+                console.log(data)
+                const products = data.products;
+                const pageInfo = data.pageInfo;
+                console.log(products);
+                // Update the product list on the page based on the fetched products
+                const productGrid = $('.product-grid-3');
+                productGrid.empty(); // Clear previous products
 
-                    products.forEach(product => {
-                        const productDiv = $('<div></div>').addClass('col-lg-4 col-md-4 col-sm-6');
-                        productDiv.html(`
-     
-     <div class="product-cart-wrap mb-30">
-                                       <div class="product-img-action-wrap">
-                                           <div class="product-img product-img-zoom">
-                                               <a href="/user-productPage/${product._id}">
-                                                   <img class="default-img" src="/${product.image[0]}" alt="">
-                                                   <img class="hover-img" src="/${product.image[1]}" alt="">
-                                               </a>
-                                           </div>
-                                           <div class="product-action-1">
-                                               <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
-                                               <a aria-label="Add To Wishlist" class="action-btn hover-up" href="#"><i class="fi-rs-heart"></i></a>
-                                               <a aria-label="Compare" class="action-btn hover-up" href="#"><i class="fi-rs-shuffle"></i></a>
-                                           </div>
+                products.forEach(product => {
+                    const productDiv = $('<div></div>').addClass('col-lg-4 col-md-4 col-sm-6');
+                    productDiv.html(`
+ 
+                                <div class="product-cart-wrap mb-30">
+                                   <div class="product-img-action-wrap">
+                                       <div class="product-img product-img-zoom">
+                                           <a href="/user-productPage/${product._id}">
+                                               <img class="default-img" src="/public/uploads/${product.image[0]}" alt="">
+                                               <img class="hover-img" src="/public/uploads/${product.image[1]}" alt="">
+                                           </a>
+                                       </div>
+                                       <div class="product-action-1">
+                                           
+                                           <a aria-label="Add To Wishlist" class="action-btn hover-up" href="#"><i class="fi-rs-heart"></i></a>
                                            
                                        </div>
-                                       <div class="product-content-wrap">
+                                       
+                                   </div>
+                                   <div class="product-content-wrap">
+                                       
+                                           <div class="product-category">
+                                               <a href="#">
+                                                   ${product.category[0].name}
+                                               </a>
+                                           </div>
                                            
-                                               <div class="product-category">
-                                                   <a href="#">
-                                                       ${product.category[0].name}
-                                                   </a>
-                                               </div>
-                                               
-                                                       <h2>
-                                                           <a href="#">
-                                                               ${product.name}
-                                                           </a>
-                                                       </h2>
-                                                       <div class="rating-result" title="90%">
+                                                   <h2>
+                                                       <a href="#">
+                                                           ${product.name}
+                                                       </a>
+                                                   </h2>
+                                                   <div class="rating-result" title="90%">
+                                                       <span>
                                                            <span>
-                                                               <span>
-                                                                   80%
-                                                               </span>
+                                                               80%
                                                            </span>
-                                                       </div>
-                                                       <div class="product-price">
-                                                           <span class="text-dark">
-                                                               ${product.offerPrice}
+                                                       </span>
+                                                   </div>
+                                                   <div class="product-price">
+                                                       <span class="text-dark">
+                                                           ${product.offerPrice}
 
-                                                           </span>
-                                                           <span class="old-price">
-                                                               ${product.productPrice}
-                                                           </span>
-                                                       </div>
-                                                       <div class="product-action-1 show">
-                                                           <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
-                                                       </div>
-                                       </div>                                 
-                                   `);
-                        productGrid.append(productDiv); // Append the new product to the grid
-                    });
+                                                       </span>
+                                                       <span class="old-price">
+                                                           ${product.productprice}
+                                                       </span>
+                                                   </div>
+                                                   <div class="product-action-1 show">
+                                                       <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                   </div>
+                                   </div>                                 
+                               `);
+                    productGrid.append(productDiv); // Append the new product to the grid
+                });
 
-                    // const paginationInfo = Page ${currentPage} of ${pageInfo.totalPages};
-                    // document.getElementById('paginationInfo').textContent = paginationInfo;
+                // const paginationInfo = Page ${currentPage} of ${pageInfo.totalPages};
+                // document.getElementById('paginationInfo').textContent = paginationInfo;
 
-                    updatePaginationLinks(currentPage, data.totalPages);
-                    updateFilterOptions(data.sorted);
-                   
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error('Error fetching products:', errorThrown);
-                }
-            });
-        };
-
-
-        $('#categoryFilter').on('change', fetchProducts);
-        $('#sortOptions').on('change', fetchProducts);
+                updatePaginationLinks(currentPage, data.totalPages);
+                updateFilterOptions(data.sorted);
+               
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error fetching products:', errorThrown);
+            }
+        });
+    };
 
 
-    </script>
+    $('#categoryFilter').on('change', fetchProducts);
+    $('#sortOptions').on('change', fetchProducts);
+
+
+</script>
 
     <script>
         const updatePaginationLinks = (currentPage, totalPages) => {

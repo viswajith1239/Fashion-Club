@@ -175,7 +175,7 @@ const getAllOffersOfProducts = () => {
       try {
         const currentDate = new Date();
         const offer = await getActiveOffer(currentDate);
-  
+  console.log("proooo",products);
         for (let i = 0; i < products.length; i++) {
           const productOffer = offer.find(
             (item) => item.productOffer?.product?.toString() == products[i]._id
@@ -188,43 +188,52 @@ const getAllOffersOfProducts = () => {
           );
   
           if (productOffer != undefined && categoryOffer != undefined) {
+            console.log("this is first if");
             if (
+            
               productOffer.productOffer.discount >
               categoryOffer.categoryOffer.discount
             ) {
               const offerPrice =
-                products[i].productPrice -
-                (products[i].productPrice * productOffer.productOffer.discount) /
+                products[i].productprice -
+                (products[i].productprice * productOffer.productOffer.discount) /
                   100;
               products[i].offerPrice = (Math.round(offerPrice));
             } else {
+              console.log("this is first if else");
               const offerPrice =
-                products[i].productPrice -
-                (products[i].productPrice *
+                products[i].productprice -
+                (products[i].productprice *
                   categoryOffer.categoryOffer.discount) /
                   100;
               products[i].offerPrice = (Math.round(offerPrice));
             }
           } else if (productOffer != undefined) {
+            console.log("this is second else if");
             const offerPrice =
-              products[i].productPrice -
-              (products[i].productPrice * productOffer.productOffer.discount) /
+              products[i].productprice -
+              (products[i].productprice * productOffer.productOffer.discount) /
                 100;
             products[i].offerPrice = (Math.round(offerPrice));
           } else if (categoryOffer != undefined) {
+            console.log("this is thired if");
             const offerPrice =
-              products[i].productPrice -
-              (products[i].productPrice * categoryOffer.categoryOffer.discount) /
+              products[i].productprice -
+              (products[i].productprice * categoryOffer.categoryOffer.discount) /
                 100;
             products[i].offerPrice =(Math.round(offerPrice));
           } else {
+            console.log("this is last  if");
             const offerPrice =
-              products[i].productPrice -
-              (products[i].productPrice * products[i].productDiscount) / 100;
+              products[i].productprice -
+              (products[i].productprice * products[i].productDiscount) / 100;
             products[i].offerPrice =(Math.round(offerPrice));
           }
-          products[i].productPrice =(products[i].productPrice);
+
+          products[i].productprice =(products[i].productprice);
+          console.log("hello",products);
         }
+        console.log('hpro',products)
         resolve(products);
       } catch (error) {
         console.log(error);

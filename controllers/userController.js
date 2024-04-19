@@ -608,11 +608,13 @@ const  shopPage= async (req, res, next) => {
   const shopFilterLoad = async (req, res, next) => {
     try {
       console.log("reached here");
-      let filteredProducts;
       const extractPrice = (price) => parseInt(price.replace(/[^\d]/g, ""));
       const { search, category, sort, page, limit } = req.query;
+      console.log(sort);
+      let filteredProducts
       if (category) {
         let userId = req.session.user;
+        
         var categories = await categoryHelper.getAllcategory();
   
         var cartCount = await cartHelper.getCartCount(userId);
@@ -620,17 +622,26 @@ const  shopPage= async (req, res, next) => {
         var wishListCount = await wishlistHelper.getWishListCount(userId);
   
         var products = await productHelper.getAllActiveProducts();
-        console.log(products);
+        console.log(products[0].category)
+    
   
         let categorySortedProducts = await products.filter((product) => {
-          return product.productCategory.toString().trim() == category.trim();
+          if(product.category[0]._id.toString().trim() == category.trim()){
+            return product
+          }
+          return null;
         });
+        console.log("ss",categorySortedProducts)
   
-        filteredProducts = await offerHelper.findOffer(categorySortedProducts);
+       filteredProducts = await offerHelper.findOffer(categorySortedProducts);
+       console.log('categoryProducts',categorySortedProducts)
+        console.log("this is filted product",filteredProducts);
+        
         var sorted = false;
       }
-      console.log(filteredProducts);
-      if (sort) {
+    
+      
+      if (sort !== undefined) {
         if (sort == "Ascending") {
           console.log("inside ascending");
           filteredProducts.sort(
@@ -657,7 +668,7 @@ const  shopPage= async (req, res, next) => {
           sorted = "Alpha";
         }
       }
-      console.log(filteredProducts);
+    
       let itemsPerPage = 6;
       let currentPage = parseInt(req.query.page) || 1;
       let startIndex = (currentPage - 1) * itemsPerPage;
