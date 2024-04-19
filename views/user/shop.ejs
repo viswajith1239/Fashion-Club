@@ -76,13 +76,27 @@
             <div class="container">
                 <div class="header-wrap">
                     <div class="logo logo-width-1">
-                        <a href="/SnatchIt-Home"><img src="/public/image/fashion club logo.jpg" alt="logo"></a>
+                        <a href=""><img src="/public/image/fashion club logo.jpg" alt="logo"></a>
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
-                            <form action="#">
-                                <input type="text" placeholder="Search for items...">
-                            </form>
+
+                            <div>
+                              <form action="/shop" method="GET">
+                                <div class="header-search-wrapper w-100">
+              
+                                  <div>
+                                    <input type="search" class="form-control w-100" id="searchInput" placeholder="Search in..."
+                                      required autocomplete="off" name="search">
+                                    <a href="#" class="search-toggle" role="button">
+                                      <i class="icon-search"></i>
+                                    </a>
+                                  </div>
+                                </div><!-- End .header-search-wrapper -->
+                              </form>
+                              <ul id="suggestionList"></ul>
+                            </div>
+              
                         </div>
                         <div class="header-action-right">
                             <div class="header-action-2">
@@ -488,7 +502,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="widget-about font-md mb-md-5 mb-lg-0">
                             <div class="logo logo-width-1 wow fadeIn animated">
-                                <a href="/SnatchIt-Home"><img src="/public/user-assets/images/SnatchIt_logo.png" alt="logo"></a>
+                                <a href=""><img src="/public/image/fashion club logo.jpg" alt="logo"></a>
                             </div>
                             <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
                             <p class="wow fadeIn animated">
@@ -724,13 +738,13 @@
                                            
                                                <div class="product-category">
                                                    <a href="#">
-                                                       ${product.category[0].categoryName}
+                                                       ${product.category[0].name}
                                                    </a>
                                                </div>
                                                
                                                        <h2>
                                                            <a href="#">
-                                                               ${product.productName}
+                                                               ${product.name}
                                                            </a>
                                                        </h2>
                                                        <div class="rating-result" title="90%">
@@ -837,6 +851,60 @@
             window.location.href=`/shop?filter=${normalFilter}`
         })
     </script>
+
+
+<script>
+    document.addEventListener('click', function (event) {
+      const suggestionList = document.getElementById('suggestionList');
+      const isClickInside = suggestionList.contains(event.target);
+
+      if (!isClickInside) {
+        suggestionList.innerHTML = ''; // Hide the suggestions by clearing the innerHTML
+      }
+    });
+
+    let searchElement = document.getElementById('searchInput');
+    searchElement.onkeyup = function () {
+      let searchWord = searchElement.value;
+      console.log("searchWord", searchWord);
+      if (searchWord != '') {
+        loadData(searchWord);
+      } else {
+        document.getElementById('suggestionList').innerHTML = ''
+      }
+
+    }
+
+    function loadData(query='') {
+    console.log(query);
+    $.ajax({
+        url: '/searchProduct',
+        type: 'POST',
+        data: { payload: query },
+        success: function(data) {
+            console.log("res block start");
+            console.log(data);
+            let searchResult = data.searchResult;
+            console.log("Hiii", searchResult);
+
+            let html = ''
+            console.log(data.searchResult.length);
+            if (data.searchResult.length > 0) {
+                for (let i = 0; i < data.searchResult.length; i++) {
+                    console.log("in loop", data.searchResult[i].name);
+                    // html += `<a href="/shop/${data.searchResult[i]._id}"><li style="display:flex;justify-content:space-evenly;text-align: center; border-bottom: 2px solid #acb1b5; width:80%% ;padding:10px"> ${data.searchResult[i].name} <img class="img-thumbnail" width="50" src="/${data.searchResult[i].image[0]}" alt="no image avalable"></li></a>`;
+                }
+                $('#suggestionList').html(html); // Update suggestionList
+            }
+            console.log("end");
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+
+  </script>
 
       
 

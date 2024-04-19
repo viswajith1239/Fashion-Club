@@ -485,12 +485,13 @@ const  shopPage= async (req, res, next) => {
         let payload = req.query.search.trim();
         let searchResult = await productModel
           .find({
-            productName: { $regex: new RegExp("^" + payload + ".*", "i") },
+            name: { $regex: new RegExp("^" + payload + ".*", "i") },
           })
-          .populate("productCategory")
+          .populate("category")
           .exec();
         if (searchResult) {
           var sorted = true;
+          var normalSorted=false
         }
   
         let userId = req.session.user;
@@ -528,6 +529,7 @@ const  shopPage= async (req, res, next) => {
           wishListCount,
           categories,
           sorted,
+          normalSorted,
           totalPages,
           payload,
         });

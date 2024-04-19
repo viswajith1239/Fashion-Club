@@ -43,6 +43,8 @@ router.post("/addToWishlist/:id", wishlistController.addToWishlist);
 
 router.post("/placeOrder",orderController.placeOrder)
 
+router.post("/searchProduct", productController.searchProduct);
+
 router.patch('/addAddress',userController.addAddress)
 
 router.patch("/updateCartQuantity",cartConroller.updateCartQuantity);
