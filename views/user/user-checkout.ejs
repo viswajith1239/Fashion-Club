@@ -653,21 +653,25 @@
                             <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Didn't added your
                                     address?</span> <a href="/user-account#add-address">Click here to Add</a></span>
                         </div>
-
-
                         <div class="col-lg-6 mb-sm-15">
                             <div class="toggle_info">
                               <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Avialable Coupons</span> <a
-                                  href="" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">See
+                                  href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">See
                                   More</a></span>
                             </div>
                             <div class="panel-collapse collapse login_form" id="loginform">
                               <div class="panel-body">
-                              
-                               
+                                <% for( let i=0; i < coupons.length; i++ ) { %>
+                                  <p>
+                                    <%=coupons[i].couponName%>: <%= coupons[i].code %>
+                                  </p><br>
+                                  <% } %>
+                
                               </div>
                             </div>
                           </div>
+
+                       
                         <div class="panel-collapse collapse login_form" id="loginform">
                             <div class="panel-body">
                                 <p class="mb-30 font-sm">If you have shopped with us before, please enter your details
@@ -700,23 +704,24 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="toggle_info">
-                            <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a
-                                    href="#coupon" data-bs-toggle="collapse" class="collapsed"
-                                    aria-expanded="false">Click here to enter your code</a></span>
+                              <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon"
+                            data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your
+                            code</a></span>
                         </div>
                         <div class="panel-collapse collapse coupon_form " id="coupon">
                             <div class="panel-body">
-                                <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
-                                <form method="post">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Enter Coupon Code...">
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn  btn-md" name="login">Apply Coupon</button>
-                                    </div>
-                                </form>
+                              <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+                              <form action="/applyCoupon" method="post" id="couponForm">
+                                <div class="form-group">
+                                  <input type="text" placeholder="Enter Coupon Code..." name="couponCode">
+                                </div>
+                                <div class="form-group">
+                                  <button class="btn  btn-md" name="login" style="background-color: lightskyblue;" type="submit">Apply
+                                    Coupon</button>
+                                </div>
+                              </form>
                             </div>
-                        </div>
+                          </div>
                     </div>
                 </div>
                 <div class="row">
@@ -1259,6 +1264,69 @@
     })
 })
 </script>
+
+
+<script>
+    $(document).ready(function () {
+      const price = convertRupeeToNumber(document.getElementById("totalAmount").textContent)
+      function convertRupeeToNumber(rupeeString) {
+        const numberString = rupeeString.replace(/₹|,/g, "");
+        return parseInt(numberString);
+      }
+      console.log(price);
+      $("#couponForm").submit(function (event) {
+        console.log("hey")
+        event.preventDefault();
+        let formData = $(this).serialize();
+        console.log(formData)
+        $.ajax({
+          url: `/applyCoupon?price=${price}`,
+          method: "POST",
+          data: formData,
+          success: (response) => {
+            if (response.status) {
+              Toastify({
+                text: `${response.message}`,
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                stopOnFocus: true,
+                style: {
+                  background: "green",
+                },
+              }).showToast();
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
+
+
+            } else {
+              Toastify({
+                text: `${response.message}`,
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                stopOnFocus: true,
+                style: {
+                  background: "red",
+                },
+              }).showToast();
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
+            }
+
+          },
+          error: (error) => {
+            console.log(error)
+          }
+        })
+
+
+      })
+
+    })
+  </script>
 
 
 

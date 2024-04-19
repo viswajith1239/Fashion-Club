@@ -8,6 +8,7 @@ const cartConroller=require('../controllers/cartController')
 const productController=require("../controllers/productController")
 const  orderController=require("../controllers/orderController")
 const wishlistController=require("../controllers/wishlistController")
+const couponController=require("../controllers/couponController")
 const userMiddleware=require("../middlewares/userMiddleware")
 
 
@@ -44,6 +45,8 @@ router.post("/addToWishlist/:id", wishlistController.addToWishlist);
 router.post("/placeOrder",orderController.placeOrder)
 
 router.post("/searchProduct", productController.searchProduct);
+
+router.post("/applyCoupon", couponController.applyCoupon);
 
 router.patch('/addAddress',userController.addAddress)
 

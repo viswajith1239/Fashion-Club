@@ -3,6 +3,7 @@ const cartModel=require("../models/cartModel")
 const productModel=require("../models/productModel")
 const cartHelper=require("../helper/cartHelper")
 const orderHelper=require("../helper/orderHelper")
+const couponHelper=require("../helper/couponHelper")
 const moment=require("moment")
 
 
@@ -10,33 +11,85 @@ const moment=require("moment")
 
 
 
-const checkoutpage=async(req,res)=>{
-    try {
-        const userId=req.session.user
+// const checkoutpage=async(req,res)=>{
+//     try {
+//         const userId=req.session.user
        
-        const userData=await user.findById({_id:userId})
-        const cartItems= await cartHelper.getAllCartItems(userId)
-        let totalandSubTotal = await cartHelper.totalSubtotal(userId, cartItems);
+//         const userData=await user.findById({_id:userId})
+//         const cartItems= await cartHelper.getAllCartItems(userId)
+//         let totalandSubTotal = await cartHelper.totalSubtotal(userId, cartItems);
 
-        let totalAmountOfEachProduct = [];
-        for (i = 0; i < cartItems.products.length; i++) {
-          let total =
-            cartItems.products[i].quantity * parseInt(cartItems.products[i].price);
-            console.log(cartItems.products[i].quantity , parseInt(cartItems.products[i].price))
-            console.log(total)
+//         let totalAmountOfEachProduct = [];
+//         for (i = 0; i < cartItems.products.length; i++) {
+//           let total =
+//             cartItems.products[i].quantity * parseInt(cartItems.products[i].price);
+//             console.log(cartItems.products[i].quantity , parseInt(cartItems.products[i].price))
+//             console.log(total)
           
-          totalAmountOfEachProduct.push(total);
-        }
-        res.render('user/user-checkout',{
-            userData,
-            cartItems,
-            totalandSubTotal,
-            totalAmountOfEachProduct
-        })
-    } catch (error) {
-        console.log(error);        
+//           totalAmountOfEachProduct.push(total);
+//         }
+//         res.render('user/user-checkout',{
+//             userData,
+//             cartItems,
+//             totalandSubTotal,
+//             totalAmountOfEachProduct
+//         })
+//     } catch (error) {
+//         console.log(error);        
+//     }
+//   }
+
+const checkoutpage = async (req, res) => {
+  try {
+    const userId = req.session.user;
+    const userData = await user.findById({ _id: userId })
+    let cartItems = await cartHelper.getAllCartItems(userId);
+    let cart = await cartModel.findOne({ user: userId });
+    const coupons = await couponHelper.findAllCoupons();
+    let totalandSubTotal = await cartHelper.totalSubtotal(userId, cartItems);
+    if (cart.coupon != null) {
+      const appliedCoupon = await couponModel.findOne({ code: cart.coupon });
+      cartItems[0].couponAmount = appliedCoupon.discount;
+  
+      let totalAmountOfEachProduct = [];
+      for (i = 0; i < cartItems.products.length; i++) {
+        let total = cartItems.products[i].quantity * parseInt(cartItems.products[i].price);
+        totalAmountOfEachProduct.push(total);
+      }
+      totalandSubTotal = totalandSubTotal;
+      console.log(cartItems);
+      if (cartItems) {
+        res.render("user/user-checkout", {
+          cartItems,
+          totalAmountOfEachProduct,
+          totalandSubTotal,
+          userData,
+          coupons,
+        });
+      }
+    } else {
+      let totalAmountOfEachProduct = [];
+      for (i = 0; i < cartItems.products.length; i++) {
+        let total = cartItems.products[i].quantity * parseInt(cartItems.products[i].price);
+        totalAmountOfEachProduct.push(total);
+      }
+      totalandSubTotal = totalandSubTotal;
+  
+      if (cartItems) {
+        res.render("user/user-checkout", {
+          cartItems,
+          totalAmountOfEachProduct,
+          totalandSubTotal,
+          userData,
+          coupons,
+        });
+      }
     }
+    
+  } catch (error) {
+    console.log(error);
   }
+}
 
 
   const placeOrder = async (req, res) => {
