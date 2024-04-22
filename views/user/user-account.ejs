@@ -700,7 +700,29 @@
                                                 </thead>
                                                 <tbody>
                                                   
+                                                    <% for( let i=0; i <walletData.wallet.details.length; i++ )
+                                                    { %>
+                                                    <tr>
+                                                        <td>
+                                                            <%= walletData.wallet.details[i].transactionId
+                                                                %>
+                                                        </td>
+                                                        <td>
+                                                            <%= walletData.wallet.details[i].formattedDate
+                                                                %>
+                                                        </td>
 
+                                                        <td>₹ <%= walletData.wallet.details[i].amount %>
+                                                        </td>
+
+                                                        <td width="10%">
+                                                            <%= walletData.wallet.details[i].type %>
+
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <% } %>
 
 
                                                 </tbody>

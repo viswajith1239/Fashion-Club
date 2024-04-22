@@ -302,9 +302,10 @@ const loadhomepage = async(req,res)=>{
         const userId=req.session.user
         const userData=await user.findOne({_id:userId})
         const walletData = await userHelper.getWalletDetails(userId);
-        // for (const amount of walletData.wallet.details) {
-        //     amount.formattedDate = moment(amount.date).format("MMM Do, YYYY");
-        //   }
+        console.log("deeee",walletData);
+        for (const amount of walletData.wallet.details) {
+            amount.formattedDate = moment(amount.date).format("MMM Do, YYYY");
+          }
           
 
         const orderDetails = await orderHelper.getOrderDetails(userId);
@@ -320,7 +321,7 @@ const loadhomepage = async(req,res)=>{
           quantity = 0;
         }
         if(userId){
-            res.render('user/user-account',{userData,orderDetails, walletData})
+            res.render('user/user-account',{userData,orderDetails,walletData})
         }else{
             res.render('user/user-account')
         }
