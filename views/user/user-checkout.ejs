@@ -800,15 +800,30 @@
                                                 <tr>
                                                     <th>SubTotal</th>
                                                     <td class="product-subtotal" colspan="2" class="text-dark">
-                                                        <span>
-                                                            <%=totalandSubTotal%>
+                                                        <% if (cartItems[0].couponAmount>0) { %>
+                                                            ₹<span>
+                                                                <%=cartItems[0].couponAmount + totalandSubTotal%>
+                                                           
                                                         </span>
+                                                        <% } else { %>
+                                                            <span>
+                                                              <%=totalandSubTotal%>
+                                                            </span>
+                                                            <% } %>
 
 
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <!-- <th>Coupon Discount</th> -->
+                                                    <th>Coupon Discount</th>
+                                                    <td colspan="2" class="text-dark">
+                                                        <% if (cartItems[0].couponAmount>0) { %>
+                                                          <span>₹ <%=cartItems[0].couponAmount %></span>
+                            
+                                                          <% } else { %>
+                                                            <span>No Coupons Applied</span>
+                                                            <% } %>
+                                                      </td>
 
                                                 </tr>
                                                 <tr>
