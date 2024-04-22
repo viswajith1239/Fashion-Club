@@ -56,6 +56,8 @@ router.patch("/cancelSingleOrder", orderController.cancelSingleOrder);
 
 router.delete("/removeCart/:id",cartConroller.removeCartItem)
 
+router.post("/createOrder", orderController.createOrder);
+
 
 router.put('/editAddress/:id',userController.editAddress)
 
