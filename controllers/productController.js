@@ -23,7 +23,7 @@ const addToCart = async (req, res) => {
     let payload = req.body.payload.trim();
     try {
       let searchResult = await productModel
-        .find({ name: { $regex: new RegExp("^" + payload + ".*", "i") } })
+        .find({ name: { $regex: new RegExp(payload + ".*", "i") } })
         .exec();
       searchResult = searchResult.slice(0, 5);
       res.json({ searchResult });

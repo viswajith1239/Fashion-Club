@@ -13,59 +13,59 @@ const userMiddleware=require("../middlewares/userMiddleware")
 
 
 
-router.get('/register',userController.Loadregister)
+router.get('/register',userMiddleware.islogout,userController.Loadregister)
 router.get('/',userController.loadhomepage)
 router.get('/otp-verification',userController.loadotp)
 router.get('/forgot-password',userController.loadforgot)
-router.post('/login',userController.checkUser)
-router.get('/login',userMiddleware.islogin,userController.loginLoad)
+router.post('/login',userMiddleware.islogout,userController.checkUser)
+router.get('/login',userMiddleware.islogout,userController.loginLoad)
 router.get('/home-page',userController.loadhomepage)
 router.get('/user-productpage/:id',userMiddleware.islogout,userController.Loaduserproduct)
-router.get('/logout',userMiddleware.islogout,userController.logoutUser)
-router.get('/productView',userController.productDetails)
-router.get('/user-account',userMiddleware.islogout,userController.loadAccount)
+router.get('/logout',userMiddleware.islogin,userController.logoutUser)
+router.get('/productView',userMiddleware.islogin,userController.productDetails)
+router.get('/user-account',userMiddleware.islogin,userController.loadAccount)
 router.get('/addressEditor/:userId/:addressId',userController.addressEditModal)
-router.get('/user-cart',cartConroller.userCart)
-router.get('/shop',userController.shopPage)
+router.get('/user-cart',userMiddleware.islogin,cartConroller.userCart)
+router.get('/shop',userMiddleware.islogin,userController.shopPage)
 router.get("/shopFilter", userMiddleware.islogout, userController.shopFilterLoad);
-router.get('/checkout',orderController.checkoutpage)
-router.get("/ordersuccesspage",orderController.ordersuccsspageload)
-router.get("/orderDetails/:id",orderController.orderDetails);
-router.get("/user-wishlist",wishlistController.wishlistLoad)
+router.get('/checkout',userMiddleware.islogin,orderController.checkoutpage)
+router.get("/ordersuccesspage",userMiddleware.islogin,orderController.ordersuccsspageload)
+router.get("/orderDetails/:id",userMiddleware.islogin,orderController.orderDetails);
+router.get("/user-wishlist",userMiddleware.islogin,wishlistController.wishlistLoad)
 
 
 router.post('/resendOTP',otpHelper.resendOtp)
 router.post('/otp-verification',userController.insertUserWithVerify)
 router.post('/register',otpHelper.sentotp)
 
-router.post("/addToCart/:id/:size", productController.addToCart);
+router.post("/addToCart/:id/:size",userMiddleware.islogin, productController.addToCart);
 
-router.post("/addToWishlist/:id", wishlistController.addToWishlist);
+router.post("/addToWishlist/:id",userMiddleware.islogin, wishlistController.addToWishlist);
 
-router.post("/placeOrder",orderController.placeOrder)
+router.post("/placeOrder",userMiddleware.islogin,orderController.placeOrder)
 
-router.post("/searchProduct", productController.searchProduct);
+router.post("/searchProduct",userMiddleware.islogin, productController.searchProduct);
 
-router.post("/applyCoupon", couponController.applyCoupon);
+router.post("/applyCoupon",userMiddleware.islogin, couponController.applyCoupon);
 
-router.patch('/addAddress',userController.addAddress)
+router.patch('/addAddress',userMiddleware.islogin,userController.addAddress)
 
-router.patch("/updateCartQuantity",cartConroller.updateCartQuantity);
+router.patch("/updateCartQuantity",userMiddleware.islogin,cartConroller.updateCartQuantity);
 
-router.patch("/cancelSingleOrder", orderController.cancelSingleOrder);
+router.patch("/cancelSingleOrder", userMiddleware.islogin,orderController.cancelSingleOrder);
 
-router.delete("/removeCart/:id",cartConroller.removeCartItem)
+router.delete("/removeCart/:id",userMiddleware.islogin,cartConroller.removeCartItem)
 
 
-router.put('/editAddress/:id',userController.editAddress)
+router.put('/editAddress/:id',userMiddleware.islogin,userController.editAddress)
 
-router.put("/updateUser",userController.updateUser)
+router.put("/updateUser",userMiddleware.islogin,userController.updateUser)
 
-router.put('/deleteAddress/:id',userController.deleteAddress)
+router.put('/deleteAddress/:id',userMiddleware.islogin,userController.deleteAddress)
 
-router.put('/updatePassword',userController.updatePassword)
+router.put('/updatePassword',userMiddleware.islogin,userController.updatePassword)
 
-router.put("/removeFromWishlist", wishlistController.removeFromWishlist);
+router.put("/removeFromWishlist", userMiddleware.islogin,wishlistController.removeFromWishlist);
 
 
 

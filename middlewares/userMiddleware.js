@@ -3,9 +3,10 @@ const { loginLoad } = require("../controllers/userController")
 const islogin=(req,res,next)=>{
     try {
         if(req.session.user){
-            res.redirect("/home-page")
-        }else{
             next()
+        }else{
+          
+            res.redirect("/home-page")
         }
     } catch (error) {
         console.log(error);
@@ -15,10 +16,11 @@ const islogin=(req,res,next)=>{
 const islogout=(req,res,next)=>{
     try {
         if(req.session.user){
-            next()
-            
+           
+            res.redirect("/home-page")  
         }else{
-            res.redirect("/home-page") 
+            
+            next()
         }
     } catch (error) {
         console.log(error);

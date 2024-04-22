@@ -485,7 +485,7 @@ const  shopPage= async (req, res, next) => {
         let payload = req.query.search.trim();
         let searchResult = await productModel
           .find({
-            name: { $regex: new RegExp("^" + payload + ".*", "i") },
+            name: { $regex: new RegExp( payload + ".*", "i") },
           })
           .populate("category")
           .exec();
