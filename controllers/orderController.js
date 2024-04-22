@@ -5,6 +5,7 @@ const cartHelper=require("../helper/cartHelper")
 const orderHelper=require("../helper/orderHelper")
 const couponHelper=require("../helper/couponHelper")
 const moment=require("moment")
+const Razorpay = require("razorpay");
 
 
 
@@ -231,6 +232,24 @@ const checkoutpage = async (req, res) => {
       console.log(error);
     }
   };
+
+  const createOrder = async (req, res) => {
+    try {
+      const amount = parseInt(req.body.totalPrice);
+      console.log(amount);
+      const order = await razorpay.orders.create({
+        amount: amount * 100,
+        currency: "INR",
+        receipt: req.session.user,
+      });
+  
+      console.log(order);
+  
+      res.json({ orderId: order });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   module.exports={
     checkoutpage,
     ordersuccsspageload,
@@ -240,5 +259,6 @@ const checkoutpage = async (req, res) => {
     changeOrderStatusOfEachProduct,
     adminOrderDetails,
     cancelSingleOrder,
-    changeOrderStatus
+    changeOrderStatus,
+    createOrder
   }
