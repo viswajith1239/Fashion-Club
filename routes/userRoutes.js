@@ -31,7 +31,7 @@ router.get("/shopFilter", userMiddleware.islogout, userController.shopFilterLoad
 router.get('/checkout',userMiddleware.islogin,orderController.checkoutpage)
 router.get("/ordersuccesspage",userMiddleware.islogin,orderController.ordersuccsspageload)
 router.get("/orderDetails/:id",userMiddleware.islogin,orderController.orderDetails);
-router.get("/user-wishlist",userMiddleware.islogin,wishlistController.wishlistLoad)
+router.get("/user-wishlist",userMiddleware.islogin,wishlistController.wishlistLoad);
 
 
 router.post('/resendOTP',otpHelper.resendOtp)
