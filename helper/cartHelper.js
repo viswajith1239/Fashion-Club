@@ -302,10 +302,8 @@ const addToCart = (userId, productId, size) => {
     });
   };
   
-  const fakeFunction = () => {
-
-    console.log("agsdgaksdgk")
-  }
+  
+  
 
 
   module.exports={

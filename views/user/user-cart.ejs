@@ -937,7 +937,7 @@
     <!-- Vendor JS-->
 
 
-    <script>
+    <!-- <script>
         const incOrDecQuantity = (productId, quantity) => {
             console.log("this is the id", productId, quantity);
             let Quantity = $("#quantity" + productId).html();
@@ -997,6 +997,66 @@
             })
         }
 
+    </script> -->
+
+    <script>
+        const incOrDecQuantity = (productId, quantity) => {
+            console.log("this is the id", productId, quantity);
+            let Quantity = $("#quantity" + productId).html();
+            $.ajax({
+                url: `/updateCartQuantity?productId=${productId}&quantity=${quantity}`,
+                method: "PATCH",
+                success: (response) => {
+                    if (response.status) {
+                        console.log(response.status);
+                        Toastify({
+                            text: `Quantity Updated`,
+                            duration: 3000,
+                            gravity: "top",
+                            position: "center",
+                            stopOnFocus: true,
+                            backgroundColor: "green",
+                        }).showToast();
+                        let individualTotal = response.cartDetails[0].products
+                        let total = individualTotal.price * individualTotal.quantity
+                        // let individualId = 'individual'+individualTotal.productItemId;
+                        // console.log(individualId,"+",total,"+",individualTotal)
+                        // document.getElementById("individualId").innerHTML = "₹" + total
+                        document.getElementById("totalAmount").innerHTML = "₹" + response.totalSubtotal
+                        document.getElementById("totalAmountFinal").innerHTML = "₹" + response.totalSubtotal
+                        console.log("totTal is", total)
+                        //document.getElementById("individualTotal").innerHTML = `${total}`
+
+
+
+                        console.log(response.cartDetails[0].products)
+
+                        $("#quantity" + productId).html(response.cartDetails[0].products.quantity)
+                        $("#individualTotal" + productId).html(response.cartDetails[0].products.quantity * response.cartDetails[0].products.price)
+                        $("#upButton" + productId).show()
+
+
+                    } else {
+                        Toastify({
+                            text: `Stock Limit Exceeded`,
+                            duration: 3000,
+                            gravity: "top",
+                            position: "center",
+                            stopOnFocus: true,
+                            backgroundColor: "red",
+                               
+                        
+                        }).showToast();
+
+
+                        $("#quantity" + productId).html(Quantity)
+                        $("#upButton" + productId).hide()
+                    }
+
+                }
+            })
+        }
+
     </script>
 
     <script>
@@ -1012,9 +1072,8 @@
                             gravity: "top",
                             position: "center",
                             stopOnFocus: true,
-                            style: {
-                                background: "red",
-                            },
+                            backgroundColor: "red",
+                            
                         }).showToast();
                         setTimeout(() => {
                             location.reload()

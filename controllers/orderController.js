@@ -5,6 +5,7 @@ const cartHelper=require("../helper/cartHelper")
 const orderHelper=require("../helper/orderHelper")
 const couponHelper=require("../helper/couponHelper")
 const moment=require("moment")
+const couponModel=require("../models/couponModel")
 const Razorpay = require("razorpay");
 
 
