@@ -699,7 +699,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                  
+                                                    <% if (walletData.wallet && walletData.wallet.details) { %>
                                                     <% for( let i=0; i <walletData.wallet.details.length; i++ )
                                                     { %>
                                                     <tr>
@@ -722,6 +722,7 @@
                                                         </td>
 
                                                     </tr>
+                                                    <% } %>
                                                     <% } %>
 
 

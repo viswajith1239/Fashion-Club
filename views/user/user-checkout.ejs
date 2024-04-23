@@ -1223,7 +1223,7 @@
             const totalAmount = document.getElementById("totalAmount");
             console.log("haiii",data,totalAmount);
 
-            if (payment === "COD"){
+            if (payment === "COD"||"Wallet"){
           $.ajax({
             url: "/placeOrder",
             method: "POST",
