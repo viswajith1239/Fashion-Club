@@ -51,7 +51,7 @@ const checkoutpage = async (req, res) => {
     let totalandSubTotal = await cartHelper.totalSubtotal(userId, cartItems);
     if (cart.coupon != null) {
       const appliedCoupon = await couponModel.findOne({ code: cart.coupon });
-      cartItems[0].couponAmount = appliedCoupon.discount;
+      cartItems.couponAmount = appliedCoupon.discount;
   
       let totalAmountOfEachProduct = [];
       for (i = 0; i < cartItems.products.length; i++) {
@@ -61,6 +61,7 @@ const checkoutpage = async (req, res) => {
       totalandSubTotal = totalandSubTotal;
       console.log(cartItems);
       if (cartItems) {
+        console.log("cartItems ssssssss", cartItems)
         res.render("user/user-checkout", {
           cartItems,
           totalAmountOfEachProduct,
@@ -78,6 +79,7 @@ const checkoutpage = async (req, res) => {
       totalandSubTotal = totalandSubTotal;
   
       if (cartItems) {
+        console.log("cartItems s---", cartItems)
         res.render("user/user-checkout", {
           cartItems,
           totalAmountOfEachProduct,

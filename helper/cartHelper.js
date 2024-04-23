@@ -221,7 +221,7 @@ const addToCart = (userId, productId, size) => {
       if (cart) {
           if (cartItems.products.length) {
             for (let i = 0; i < cartItems.products.length; i++) {
-              console.log(cartItems.products[i])
+              
               total =total + cartItems.products[i].quantity *parseInt(cartItems.products[i].price);
             }
           } 
@@ -286,6 +286,7 @@ const addToCart = (userId, productId, size) => {
           { user: userId },
           {
             $pull: { products: { productItemId: productId } },
+            $set:{coupon:null}
           }
         )
         .then((result) => {

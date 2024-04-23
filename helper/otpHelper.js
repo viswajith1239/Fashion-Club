@@ -47,7 +47,7 @@ const sentotp=(req,res)=>{
                 console.log(error);
                 return res.status(500).json({error:"Error sending OTP email"})
             }
-            console.log("otp sent to the user email");
+            console.log("otp sent to the user email",otp);
         })
 
         req.session.otp=otp

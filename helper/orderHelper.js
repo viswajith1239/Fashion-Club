@@ -2,6 +2,7 @@ const cartModel=require("../models/cartModel")
 const userModel=require("../models/userModel")
 const productModel=require("../models/productModel")
 const orderModel=require("../models/orderModel")
+const walletHelper=require("../helper/walletHelper")
 
 
 const ObjectId = require("mongoose").Types.ObjectId;
@@ -287,7 +288,7 @@ const placeOrder = (body, userId) => {
         resolve(cancelled);
       } catch (error) {
         console.log(error);
-        console.log('hekko');
+      
       }
     });
   };
