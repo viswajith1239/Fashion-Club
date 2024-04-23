@@ -287,6 +287,7 @@ const placeOrder = (body, userId) => {
         resolve(cancelled);
       } catch (error) {
         console.log(error);
+        console.log('hekko');
       }
     });
   };
