@@ -237,6 +237,7 @@ const checkoutpage = async (req, res) => {
   };
 
   const createOrder = async (req, res) => {
+    console.log("entered in to create order");
     try {
       const amount = parseInt(req.body.totalPrice);
       console.log(amount);
@@ -253,6 +254,39 @@ const checkoutpage = async (req, res) => {
       console.log(error);
     }
   };
+  const orderFailedPageLoad = (req, res) => {
+    res.render("user/orderFailure-page");
+  };
+ 
+  
+
+
+
+  const loadSalesReport = async (req, res) => {
+    try {
+      orderHelper
+        .salesReport()
+        .then((response) => {
+          console.log(response);
+          response.forEach((order) => {
+            const orderDate = new Date(order.orderedOn);
+            const formattedDate = orderDate.toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            });
+            order.orderedOn = formattedDate;
+          });
+  
+          res.render("admin/admin-salesReport", { sales: response });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   module.exports={
     checkoutpage,
     ordersuccsspageload,
@@ -263,5 +297,8 @@ const checkoutpage = async (req, res) => {
     adminOrderDetails,
     cancelSingleOrder,
     changeOrderStatus,
-    createOrder
+    createOrder,
+    loadSalesReport,
+    orderFailedPageLoad
+ 
   }

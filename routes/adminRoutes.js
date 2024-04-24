@@ -29,6 +29,7 @@ router.get("/admin-productoffer", adminMiddleware.islogoutAdmin, offerController
 router.get("/productEditOffer/:id", adminMiddleware.islogoutAdmin, offerController.productEditLoad);
 router.get("/admin-categoryoffer", adminMiddleware.islogoutAdmin, offerController.categoryofferLoad)
 router.get("/categoryEditOffer/:id", adminMiddleware.islogoutAdmin, offerController.categoryEditLoad);
+router.get("/admin-salesReport",adminMiddleware.islogoutAdmin, orderController.loadSalesReport);
 
 
 

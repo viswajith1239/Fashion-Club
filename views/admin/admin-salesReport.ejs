@@ -1,11 +1,12 @@
+
 <!DOCTYPE HTML>
 <html lang="en">
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Orders</title>
+    <title>Fashion Club</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,7 +25,7 @@
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
             <a href="index.html" class="brand-wrap">
-                <img src="/public/image/fashion club logo.jpg" class="logo" alt="Evara Dashboard">
+                <img src="/public/image/fashion club logo.jpg" class="logo" alt="logo">
             </a>
             <div>
                 <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
@@ -33,38 +34,55 @@
         <nav>
             <ul class="menu-aside">
                 <li class="menu-item">
-                    <a class="menu-link" href="/admin-dashboard"> <i class="icon material-icons md-home"></i>
+                    <a class="menu-link" href="admin-dashboard"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item ">
-                    <a class="menu-link" href="/admin-userEdit"> <i class="icon material-icons md-people"></i>
+                <li class="menu-item">
+                    <a class="menu-link" href="admin-userEdit"> <i class="icon material-icons md-group"></i>
                         <span class="text">User Control</span>
                     </a>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-shopping_bag"></i>
+                    <a class="menu-link" href="product-list"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
                     <div class="submenu">
-                        <a href="/product-list">Product List</a>
-                        <a href="/admin-category">Categories</a>
+                        <a href="product-list">Product List</a>
+                        <!-- <a href="page-products-grid.html">Product grid</a>
+                        <a href="page-products-grid-2.html">Product grid 2</a> -->
+                        <a href="admin-category">Categories</a>
                     </div>
                 </li>
-                <li class="menu-item  active">
+                <li class="menu-item ">
                     <a class="menu-link" href="/admin-orders"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
-                   
+                    <!-- <div class="submenu">
+                        <a href="page-orders-1.html">Order list 1</a>
+                        <a href="page-orders-2.html">Order list 2</a>
+                        <a href="page-orders-detail.html">Order detail</a>
+                    </div>
                 </li>
-               
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-add_box"></i>
+                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Sellers</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-sellers-cards.html">Sellers cards</a>
+                        <a href="page-sellers-list.html">Sellers list</a>
+                        <a href="page-seller-detail.html">Seller profile</a>
+                    </div>
+                </li> -->
+                <li class="menu-item ">
+                    <a class="menu-link" href="adminadd-products"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Add product</span>
                     </a>
                     <div class="submenu">
-                        <a href="/adminadd-products">Add product</a>
-                       
+                        <a href="adminadd-products" class="active">Add product</a>
+                        <!-- <a href="page-form-product-2.html">Add product 2</a>
+                        <a href="page-form-product-3.html">Add product 3</a>
+                        <a href="page-form-product-4.html">Add product 4</a> -->
                     </div>
                 </li>
 
@@ -74,6 +92,7 @@
                     </a>
                    
                 </li> 
+
                 <li class="menu-item has-submenu ">
                     <a class="menu-link" href=""> <i class="icon material-icons md-local_mall"></i>
                         <span class="text">Offer</span>
@@ -82,20 +101,51 @@
                         <a href="/admin-productoffer">ProductOffer</a>
                         <!-- <a href="page-products-grid.html">Product grid</a>
                         <a href="page-products-grid-2.html">Product grid 2</a> -->
-                        <a href="/admin-categoryoffer" >CategoryOffer</a>
+                        <a href="/admin-categoryoffer">CategoryOffer</a>
                     </div>
                 </li>
-                <li class="menu-item ">
-                    <a class="menu-link" href="/admin-salesReport"> <i class="icon material-icons md-local_offer"></i>
-                        <span class="text">salesReport</span>
+                <!-- <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
+                        <span class="text">Transactions</span>
                     </a>
-                   
-                </li> 
-                
-              
+                    <div class="submenu">
+                        <a href="page-transactions-1.html">Transaction 1</a>
+                        <a href="page-transactions-2.html">Transaction 2</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Account</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-account-login.html">User login</a>
+                        <a href="page-account-register.html">User registration</a>
+                        <a href="page-error-404.html">Error 404</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
+                        <span class="text">Reviews</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
+                        <span class="text">Brands</span> </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Statistics</span>
+                    </a>
+                </li>
+            </ul> -->
+
+            <li class="menu-item active">
+                <a class="menu-link" href="/admin-salesReport"> <i class="icon material-icons md-local_offer"></i>
+                    <span class="text">salesReport</span>
+                </a>
                
-               
-            </ul>
+            </li> 
+
             <hr>
             <ul class="menu-aside">
                 <li class="menu-item has-submenu">
@@ -107,7 +157,11 @@
                         <a href="page-settings-2.html">Setting sample 2</a>
                     </div>
                 </li>
-               
+                <!-- <li class="menu-item">
+                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text"> Starter page </span>
+                    </a>
+                </li> -->
             </ul>
             <br>
             <br>
@@ -117,16 +171,8 @@
         <header class="main-header navbar">
             <div class="col-search">
                 <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
-                    </div>
-                    <datalist id="search_terms">
-                        <option value="Products">
-                        <option value="New orders">
-                        <option value="Apple iphone">
-                        <option value="Ahmed Hassan">
-                    </datalist>
+                  
+                   
                 </form>
             </div>
             <div class="col-nav">
@@ -170,116 +216,56 @@
         </header>
         <section class="content-main">
             <div class="content-header">
-                <div>
-                    <h2 class="content-title card-title">Order List </h2>
-                    
-                </div>
-                <div>
-                    <input type="text" placeholder="Search order ID" class="form-control bg-white">
-                </div>
+              <div>
+                <h2 class="content-title card-title">Sales Report </h2>
+              </div>
+              <div>
+                <a id="xlsheet" onclick="ExportToExcel()" class="btn btn-light rounded font-md">Download XLSheet</a>
+                <a href="#" id="pdf" data-value="" class="btn btn-light rounded  font-md">Download PDF</a>
+              </div>
             </div>
             <div class="card mb-4">
-                <header class="card-header">
-                    <div class="row gx-3">
-                        <div class="col-lg-4 col-md-6 me-auto">
-                            <input type="text" placeholder="Search..." class="form-control">
-                        </div>
-                        <div class="col-lg-2 col-6 col-md-3">
-                            <select class="form-select">
-                                <option>Status</option>
-                                <option>Active</option>
-                                <option>Disabled</option>
-                                <option>Show all</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-2 col-6 col-md-3">
-                            <select class="form-select">
-                                <option>Show 20</option>
-                                <option>Show 30</option>
-                                <option>Show 40</option>
-                            </select>
-                        </div>
+              <header class="card-header">
+                <form id="date-wise-report" method="post" action="/admin/loadSalesReportDateSort">
+                  <div class="row gx-3">
+                    <div class="col-lg-2 col-6 col-md-3">
+                      <label class="form-label">Start Date</label>
+                      <input type="date" name="startDate" value="" class="form-control" required>
                     </div>
-                </header> <!-- card-header end// -->
-                <div class="card-body">
-                    
-                    <div class="table-responsive">
-                        <% if (!allOrders.length) { %>
-                          <h1>No Orders Yet</h1>
-                          <% } else { %>
-              
-                            <table class="table table-hover" id="orderTable">
-                              <thead>
-                                <tr>
-                                  <th>ORDER ID</th>
-                                  <th scope="col">USER NAME</th>
-                                  <th scope="col">DATE</th>
-                                  <th scope="col">AMOUNT</th>
-                                  <th scope="col">PAYMENT TYPE</th>
-                                  <th scope="col">VIEW DETAILS </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <% for( let i=0; i < allOrders.length; i++ ) { %>
-                                  <tr>
-                                    <td width="10%">
-                                      #<%= allOrders[i].orderId %>
-                                    </td>
-                                    <td width="8%">
-                                      <%= allOrders[i].userOrderDetails[0].name %>
-                                    </td>
-                                    <td width="15%">
-                                      <%= allOrders[i].formattedDate %>
-                                    </td>
-                                    <td width="7%">
-                                      ₹ <%= allOrders[i].totalAmount %>
-                                    </td>
-                                    <td width="7%">
-                                      <%= allOrders[i].paymentMethod %>
-                                    </td>
-                                    
-                                    <td width="10%">
-                                      <a href="/admin-orderDetails/<%= allOrders[i]._id %>"
-                                        class="btn btn-primary">Details</a>
-                                    </td>
-                                  </tr>
-                                  <% } %>
-                              </tbody>
-                            </table>
-                            <% } %>
-              
-                      </div>
-
-                </div> <!-- card-body end// -->
+                    <div class="col-lg-2 col-6 col-md-3">
+                      <label class="form-label">End Date</label>
+                      <input type="date" name="endDate" value="" class="form-control" required>
+                    </div>
+                    <div class="col-lg-4 col-md-6 me-auto">
+                      <button type="submit" class="btn btn-primary mt-4  btn-sm rounded">Get Report</button>
+                    </div>
+                  </div>
+                </form>
+              </header> <!-- card-header end// -->
+              <div id="sales-report" class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover" id="sales-table">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th class="text-center">Order Id</th>
+                        <th class="text-center">Customer</th>
+                        <th class="text-center">Order Date</th>
+                        <th class="text-center">Payment Method</th>
+                        <th class="text-center">Order Status</th>
+                        <th class="text-center">Total Amount</th>
+                      </tr>
+                    </thead>
+                   
+                  </table>
+                  <!-- <input type="hidden" id="salesReportStore" value="ejsout sales "> -->
+                </div> <!-- table-responsive //end -->
+              </div> <!-- card-body end// -->
             </div> <!-- card end// -->
-            <div class="pagination-area mt-15 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
-            </div>
-        </section> <!-- content-main end// -->
-        <footer class="main-footer font-xs">
-            <div class="row pb-30 pt-15">
-                <div class="col-sm-6">
-                    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-                    document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
-                </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end">
-                        All rights reserved
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </main>
+        
+          </section> <!-- content-main end// -->
+                
+    
     <script src="/public/admin-assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/public/admin-assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/public/admin-assets/js/vendors/select2.min.js"></script>
@@ -290,5 +276,5 @@
 </body>
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
 </html>

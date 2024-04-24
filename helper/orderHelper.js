@@ -292,6 +292,28 @@ const placeOrder = (body, userId) => {
       }
     });
   };
+
+  const salesReport = async () => {
+    try {
+      const result = await orderModel.aggregate([
+        { $unwind: "$products" },
+        { $match: { "products.status": "delivered" } },
+        {
+          $lookup: {
+            from: "products",
+            localField: "products.product",
+            foreignField: "_id",
+            as: "productDetails",
+          },
+        },
+      ]);
+  
+      return result;
+    } catch (error) {
+      console.log("Error:", error);
+      throw error; // Re-throwing the error to be caught elsewhere if needed.
+    }
+  };
   module.exports={
     placeOrder,
     getOrderDetails,
@@ -300,5 +322,6 @@ const placeOrder = (body, userId) => {
     getAllOrders,
     changeOrderStatusOfEachProduct,
     cancelSingleOrder,
-    changeOrderStatus
+    changeOrderStatus,
+    salesReport 
   }

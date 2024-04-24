@@ -32,6 +32,8 @@ router.get('/checkout',userMiddleware.islogin,orderController.checkoutpage)
 router.get("/ordersuccesspage",userMiddleware.islogin,orderController.ordersuccsspageload)
 router.get("/orderDetails/:id",userMiddleware.islogin,orderController.orderDetails);
 router.get("/user-wishlist",userMiddleware.islogin,wishlistController.wishlistLoad);
+router.get("/orderFailure-page", userMiddleware.islogin, orderController.orderFailedPageLoad);
+
 
 
 router.post('/resendOTP',otpHelper.resendOtp)
