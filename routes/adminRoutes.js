@@ -41,6 +41,7 @@ router.patch("/orderStatusChangeForEachProduct/:orderId/:productId", adminMiddle
     orderController.changeOrderStatusOfEachProduct);
     router.patch('/deleteCategoryOffer/:id', adminMiddleware.islogoutAdmin,offerController.deleteCategoryOffer);
     router.patch('/deleteProductOffer/:id', adminMiddleware.islogoutAdmin,offerController.deleteProductOffer);
+    router.patch("/deleteImage/:id/:image",adminMiddleware.islogoutAdmin,adminController.deleteImage);
 
 router.put('/addcategory', adminMiddleware.islogoutAdmin, adminController.addcategory)
 router.put("/orderStatusChange", orderController.changeOrderStatus);
@@ -53,6 +54,7 @@ router.post("/productAddOffer", adminMiddleware.islogoutAdmin, offerController.p
 router.post("/productEditOffer", adminMiddleware.islogoutAdmin, offerController.productEditOffer);
 router.post("/categoryAddOffer", adminMiddleware.islogoutAdmin, offerController.addCategoryOffer);
 router.post("/categoryEditOffer", adminMiddleware.islogoutAdmin, offerController.categoryEditOffer);
+router.post("/admin-salesReport",adminMiddleware.islogoutAdmin, orderController.loadSalesReportDateSort);
 
 router.delete("/deleteCoupon/:id", adminMiddleware.islogoutAdmin, couponController.deleteCoupon)
 

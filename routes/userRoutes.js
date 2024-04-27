@@ -58,7 +58,9 @@ router.patch("/cancelSingleOrder", userMiddleware.islogin,orderController.cancel
 
 router.delete("/removeCart/:id",userMiddleware.islogin,cartConroller.removeCartItem)
 
-router.post("/createOrder", orderController.createOrder);
+router.post("/createorder",userMiddleware.islogin, orderController.createOrder);
+
+router.post('/paymentSuccess', userMiddleware.islogin,orderController.paymentSuccess);
 
 
 router.put('/editAddress/:id',userMiddleware.islogin,userController.editAddress)

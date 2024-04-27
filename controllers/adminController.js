@@ -6,6 +6,7 @@ const productHelper=require("../helper/productHelper")
 const product=require('../models/productModel')
 const admin=require("../models/adminModel")
 const orderHelper=require("../helper/orderHelper")
+const fs =require("fs")
 
 
 const Loadproductlists=async(req,res)=>{
@@ -285,6 +286,39 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 
+const deleteImage = async (req,res)=>{
+  try{
+    
+    const productId = req.params.id;
+    const image = req.params.image;
+
+    
+
+    const updatedProduct = await product.findByIdAndUpdate(
+      {_id:productId},
+      { $pull: { image: image } }, // Use $pull to remove the specified image from the images array
+      { new: true } // Set { new: true } to return the updated document after the update operation
+  );
+  
+  fs.unlink("public/uploads/" + image, (err) => {
+    if (err) {
+      reject(err);
+    }
+  });
+
+  if(updatedProduct){
+    res.json({message : "image deleted"});
+
+  }else{
+    res.json({message : "something went wrong"});
+
+  }
+  }catch(error){
+    console.log(error)
+
+  }
+}
+
 
 
 
@@ -309,7 +343,7 @@ module.exports={
     checkAdmin,
     logoutAdmin,
     isAuthenticated,
-   
+    deleteImage
     
     
 

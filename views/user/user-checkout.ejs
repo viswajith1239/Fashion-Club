@@ -460,6 +460,7 @@
         </div>
     </header>
     <div class="mobile-header-active mobile-header-wrapper-style">
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
         <div class="mobile-header-wrapper-inner">
             <div class="mobile-header-top">
                 <div class="mobile-header-logo">
@@ -1221,10 +1222,11 @@
               addressId: address,
               paymentOption: payment,
             }
-            const totalAmount = document.getElementById("totalAmount");
+            const totalAmount = document.getElementById("totalAmount").textContent;
             console.log("haiii",data,totalAmount);
 
-            if (payment === "COD"||"Wallet"){
+            if (payment === "COD"){
+                // console.log(payment);
           $.ajax({
             url: "/placeOrder",
             method: "POST",
@@ -1248,7 +1250,8 @@
           })
         }else if (payment === "RazorPay") {
                     console.log("razorpay selected");
-
+                    console.log(typeof(totalAmount));
+                    // const newamount = parseInt(totalAmount)
                     $.ajax({
                         url:` /createorder?totalAmount=${totalAmount}`,
                         type: 'POST',
@@ -1258,12 +1261,12 @@
                             const parseAmount = parseInt(totalAmount);
                             console.log(data);
                             var options = {
-                                "key": "rzp_test_hb6zaZS4NZIqmD",
+                                "key": "rzp_test_05I4s2GGAsvHw0",
                                 "amount": 100000,
                                 "currency": "INR",
                                 "name": "Fashion Club",
                                 "description": "Test Transaction",
-                                "image": "https://example.com/your_logo",
+                                "image": "https://localhost:3002/public/image/fashion club logo.jpg" ,
                                 "order_id": data.orderId.id,
                                 "handler": function (response) {
                                     console.log(response);
@@ -1298,7 +1301,7 @@
                     function handleFailure(description, address, paymentMethod) {
                         console.log('Payment failed:', description);
                         createOrderWithStatusPending(address, paymentMethod);
-                        window.location.href = "/orderFailedPage";
+                        window.location.href = "/orderFailure-page";
                     }
 
                     function createOrderWithStatusPending(address, paymentMethod) {
@@ -1329,8 +1332,8 @@
                         $.ajax({
                             url: '/paymentSuccess',
                             type: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify({
+                          
+                            data:({
                                 paymentid: response.razorpay_payment_id,
                                 razorpayorderid: response.razorpay_order_id,
                                 signature: response.razorpay_signature,
@@ -1341,14 +1344,14 @@
                                     $.ajax({
                                         url: '/placeOrder',
                                         type: 'POST',
-                                        contentType: 'application/json',
-                                        data: JSON.stringify({
+                                      
+                                        data:({
                                             addressId: address,
                                             paymentOption: payment,
                                         }),
                                         success: function (data) {
                                             console.log(data);
-                                            window.location.href = '/orderSuccessPage';
+                                            window.location.href = '/ordersuccesspage';
                                         },
                                         error: function (xhr, status, error) {
                                             console.error('Error:', error);

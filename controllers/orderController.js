@@ -8,6 +8,11 @@ const moment=require("moment")
 const couponModel=require("../models/couponModel")
 const Razorpay = require("razorpay");
 
+var razorpay = new Razorpay({
+  key_id: process.env.KEY_ID,
+  key_secret: process.env.KEY_SECRET,
+});
+
 
 
 
@@ -239,7 +244,7 @@ const checkoutpage = async (req, res) => {
   const createOrder = async (req, res) => {
     console.log("entered in to create order");
     try {
-      const amount = parseInt(req.body.totalPrice);
+      const amount = parseInt(req.query.totalAmount);
       console.log(amount);
       const order = await razorpay.orders.create({
         amount: amount * 100,
@@ -256,6 +261,28 @@ const checkoutpage = async (req, res) => {
   };
   const orderFailedPageLoad = (req, res) => {
     res.render("user/orderFailure-page");
+  };
+
+  const paymentSuccess = (req, res) => {
+    try {
+      const { paymentid, signature, orderId } = req.body;
+      const { createHmac } = require("node:crypto");
+  
+      const hash = createHmac("sha256", process.env.KEY_SECRET)
+        .update(orderId + "|" + paymentid)
+        .digest("hex");
+  
+      if (hash === signature) {
+        console.log("success");
+        res.status(200).json({ success: true, message: "Payment successful" });
+      } else {
+        console.log("error");
+        res.json({ success: false, message: "Invalid payment details" });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+    }
   };
  
   
@@ -287,6 +314,31 @@ const checkoutpage = async (req, res) => {
       console.log(error);
     }
   };
+
+  const loadSalesReportDateSort = async (req, res) => {
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+    console.log(startDate, endDate);
+    orderHelper
+      .salesReportDateSort(startDate, endDate)
+      .then((response) => {
+        console.log(response);
+        response.forEach((order) => {
+          const orderDate = new Date(order.orderedOn);
+          const formattedDate = orderDate.toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          });
+          order.orderedOn = formattedDate;
+        });
+  
+        res.json({ sales: response });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   module.exports={
     checkoutpage,
     ordersuccsspageload,
@@ -299,6 +351,8 @@ const checkoutpage = async (req, res) => {
     changeOrderStatus,
     createOrder,
     loadSalesReport,
-    orderFailedPageLoad
+    orderFailedPageLoad,
+    loadSalesReportDateSort,
+    paymentSuccess
  
   }
