@@ -698,7 +698,9 @@
         const currentPage = page||1; // Initial page
         const limitPerPage = 10; // Number of products per page
 
-
+        console.log("thisis  category",categoryFilter)
+        console.log("thisis  sort",sortOption)
+       
         const url = `/shopFilter?category=${categoryFilter}&sort=${sortOption}&page=${currentPage}&limit=${limitPerPage};`
         console.log(url)
 

@@ -27,7 +27,7 @@ router.get('/user-account',userMiddleware.islogin,userController.loadAccount)
 router.get('/addressEditor/:userId/:addressId',userController.addressEditModal)
 router.get('/user-cart',userMiddleware.islogin,cartConroller.userCart)
 router.get('/shop',userMiddleware.islogin,userController.shopPage)
-router.get("/shopFilter", userMiddleware.islogout, userController.shopFilterLoad);
+router.get("/shopFilter",userMiddleware.islogin, userController.shopFilterLoad);
 router.get('/checkout',userMiddleware.islogin,orderController.checkoutpage)
 router.get("/ordersuccesspage",userMiddleware.islogin,orderController.ordersuccsspageload)
 router.get("/orderDetails/:id",userMiddleware.islogin,orderController.orderDetails);

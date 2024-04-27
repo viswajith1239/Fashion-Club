@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 
 const walletAmountAdding = async (userId, subTotal) => {
+  console.log("enterd in to amount adding");
   try {
     // Fetching current user
     const user = await userModel.findById(userId);

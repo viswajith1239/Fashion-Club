@@ -823,7 +823,7 @@
                                     <div class="custome-radio">
                                         <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" checked="" value="Wallet">
                                         <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Wallet</label>
-                                       <span style="font-size: 14px;" class="badge text-dark">Avialable Balance: <span class="text-primary">(₹ <%=userData.wallet.balance%>)</span> </span></label>
+                                       <span style="font-size: 14px;" class="badge text-dark"> <span class="text-primary"></span> </span></label>
                                         <div class="form-group collapse in" id="checkPayment">
                                             <p class="text-muted mt-5">Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode. </p>
                                         </div>
@@ -1224,8 +1224,8 @@
             }
             const totalAmount = document.getElementById("totalAmount").textContent;
             console.log("haiii",data,totalAmount);
-
-            if (payment === "COD"){
+            console.log(payment);
+            if (payment === "COD"||payment == "Wallet"){
                 // console.log(payment);
           $.ajax({
             url: "/placeOrder",

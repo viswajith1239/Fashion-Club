@@ -423,13 +423,13 @@
                                                                 type="text" id="name" value="<%= userData.name %>">
                                                             <span id="nameError" class="text-danger"></span>
                                                         </div>
-                                                        <div class="form-group col-md-6">
+                                                        <!-- <div class="form-group col-md-6">
                                                             <label>Email Address <span class="required">*</span></label>
                                                             <input required="" class="form-control square" name="email"
-                                                                type="email" id="email" value="<%= userData.email %>"
+                                                                type="email" id="email" value=""
                                                                 readonly>
                                                             <span id="emailError" class="text-danger"></span>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group col-md-6">
@@ -699,7 +699,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <% if (walletData.wallet && walletData.wallet.details) { %>
+                                                  
                                                     <% for( let i=0; i <walletData.wallet.details.length; i++ )
                                                     { %>
                                                     <tr>
@@ -723,7 +723,7 @@
 
                                                     </tr>
                                                     <% } %>
-                                                    <% } %>
+                                                
 
 
                                                 </tbody>
@@ -811,7 +811,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="widget-about font-md mb-md-5 mb-lg-0">
                             <div class="logo logo-width-1 wow fadeIn animated">
-                                <a href="index.html"><img src="/public/image/fashion club logo.jpg " alt=logo></a>
+                                <a href="index.html"><img src="/public/image/fashion club logo.jpg " alt="logo"></a>
                             </div>
                             <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
                             <p class="wow fadeIn animated">
@@ -898,7 +898,7 @@
             </div>
         </div>
     </footer>
-    <!-- Preloader Start -->
+  
     <div id="preloader-active">
         <div class="preloader d-flex align-items-center justify-content-center">
             <div class="preloader-inner position-relative">
@@ -913,7 +913,7 @@
             </div>
         </div>
     </div>
-    <!-- Vendor JS-->
+   
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/public/user-assets/js/vendor/modernizr-3.6.0.min.js"></script>
@@ -935,7 +935,7 @@
     <script src="/public/user-assets/js/plugins/scrollup.js"></script>
     <script src="/public/user-assets/js/plugins/jquery.vticker-min.js"></script>
     <script src="/public/user-assets/js/plugins/jquery.theia.sticky.js"></script>
-    <!-- Template  JS -->
+ 
     <script src="/public/user-assets/js/maind134.js?v=3.4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js"></script>
 
@@ -1215,6 +1215,7 @@
                 e.preventDefault();
             }
         })
+
     </script>
 
     <script>////////MODAL////////////////
@@ -1252,8 +1253,11 @@
         ///////////////////EDIT-IN-MODAL////////////////////
         document.getElementById("editAddressForm").addEventListener("submit", function (event) {
             event.preventDefault();
+            const valid = validateForm4()
+            if(valid){
             let formdata = $(this).serialize();
             let addressId = $(this).find('input[name="addressid"]').val();
+      
             console.log("address id :", addressId)
             $.ajax({
                 url: "/editAddress/" + addressId,
@@ -1280,6 +1284,7 @@
 
                 }
             });
+        }
         })
     </script>
 
@@ -1315,6 +1320,83 @@
         }
 
     </script>
+    <script>/////////////////add address VALIDATION//////////////////////////
+
+
+  function validateForm4() {
+
+    const houseRegex = /^(?!\s*$)[a-zA-Z0-9\s]+$/; // Allow letters, numbers, and spaces
+    const streetRegex = /^(?!\s*$)[a-zA-Z\s]+$/; // Allow letters and spaces
+    const areaRegex = /^(?!\s*$)[a-zA-Z\s]+$/; // Allow letters and spaces
+    const districtRegex = /^(?!\s*$)[a-zA-Z\s]+$/; // Allow letters and spaces
+    const stateRegex = /^(?!\s*$)[a-zA-Z\s]+$/; // Allow letters and spaces
+    const countryRegex = /^(?!\s*$)[a-zA-Z\s]+$/; // Allow letters and spaces
+    const pincodeRegex = /^\d{6}$/; 
+    let isValid = true;
+
+
+    if (!houseRegex.test(document.getElementById("housename1").value)) {
+      
+        document.getElementById("house-error").innerHTML = "Invalid Format";
+        isValid = false;
+        
+    } else {
+        document.getElementById("house-error").innerHTML = "";
+    }
+
+    if (!streetRegex.test(document.getElementById("streetname1").value)) {
+        document.getElementById("street-error").innerHTML = "Invalid";
+        isValid = false;
+    } else {
+        document.getElementById("street-error").innerHTML = "";
+    }
+
+    if (!areaRegex.test(document.getElementById("areaname1").value)) {
+        document.getElementById("area-error").innerHTML = "Invalid";
+        isValid = false;
+    } else {
+        document.getElementById("area-error").innerHTML = "";
+    }
+
+    if (!districtRegex.test(document.getElementById("districtname1").value)) {
+        document.getElementById("district-error").innerHTML = "Invalid";
+        isValid = false;
+    } else {
+        document.getElementById("district-error").innerHTML = "";
+    }
+
+    if (!stateRegex.test(document.getElementById("statename1").value)) {
+        document.getElementById("state-error").innerHTML = "Invalid";
+        isValid = false;
+    } else {
+        document.getElementById("state-error").innerHTML = "";
+    }
+
+    if (!countryRegex.test(document.getElementById("countryname1").value)) {
+       
+        document.getElementById("country-error").innerHTML = "Invalid";
+        isValid = false;
+    } else {
+        document.getElementById("country-error").innerHTML = "";
+    }
+
+    if (!pincodeRegex.test(document.getElementById("pin1").value)) {
+        document.getElementById("pin-error").innerHTML = "Invalid Pincode (should be 6 digits)";
+        isValid = false;
+    } else {
+        document.getElementById("pin-error").innerHTML = "";
+    }
+
+    return isValid;
+}
+document.getElementById("formAddress").addEventListener("submit", (e) => {
+    const result = validateForm4();
+    console.log(result)
+    if (!result) {
+        e.preventDefault();
+    }
+})
+</script>
 
 </body>
 

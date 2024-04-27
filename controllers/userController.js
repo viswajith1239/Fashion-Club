@@ -623,7 +623,7 @@ const  shopPage= async (req, res, next) => {
         var wishListCount = await wishlistHelper.getWishListCount(userId);
   
         var products = await productHelper.getAllActiveProducts();
-        console.log(products[0].category)
+        console.log("products",products)
     
   
         let categorySortedProducts = await products.filter((product) => {
@@ -668,6 +668,8 @@ const  shopPage= async (req, res, next) => {
           });
           sorted = "Alpha";
         }
+      }else{
+        
       }
     
       let itemsPerPage = 6;

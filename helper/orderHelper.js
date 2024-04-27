@@ -239,6 +239,7 @@ const placeOrder = (body, userId) => {
 
 
   const cancelSingleOrder = (orderId, singleOrderId, price) => {
+    console.log("enterd in to cancel single order");
     return new Promise(async (resolve, reject) => {
       try {
         const cancelled = await orderModel.findOneAndUpdate(
@@ -278,7 +279,10 @@ const placeOrder = (body, userId) => {
           }
         );
         const response = await orderModel.findOne({ _id: orderId });
-        if (response.paymentMethod == "Razorpay") {
+        console.log("order id is",orderId)
+        console.log("response issssssssssss",response.paymentMethod)
+        if (response.paymentMethod == 'RazorPay') {
+          console.log("razorpay");
           const walletUpdation = await walletHelper.walletAmountAdding(
             response.user,
             price
@@ -319,11 +323,22 @@ const placeOrder = (body, userId) => {
     try {
       const startDateSort = new Date(startDate);
       const endDateSort = new Date(endDate);
+  console.log("hello",startDateSort);
+  console.log("hai",endDateSort);
+
+  function getNextDay(date) {
+    const nextDay = new Date(date);
+    nextDay.setDate(nextDay.getDate() + 1);
+    return nextDay;
+  }
   
+  // Get the end date plus one day to include the entire day
+  const endDateSortPlusOneDay = getNextDay(endDateSort);
+
       const result = await orderModel.aggregate([
         {
           $match: {
-            orderedOn: { $gte: startDateSort, $lte: endDateSort },
+            orderedOn: { $gte: startDateSort,$lt: endDateSortPlusOneDay },
           },
         },
         { $unwind: "$products" },
