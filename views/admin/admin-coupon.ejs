@@ -326,77 +326,81 @@
         
         </section> <!-- content-main end// -->
 
-           <div class="modal fade" id="addCoupon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Add Coupon </h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form action="/addCoupon" method="post">
-                    <div class="mb-3">
-                      <label for="recipient-name" class="col-form-label">Coupon Name</label>
+        <div class="modal fade" id="addCoupon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Coupon </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="/addCoupon" method="post" id="addCouponForm">
+                  <div class="mb-3">
+                      <label for="couponName" class="col-form-label">Coupon Name</label>
                       <input type="text" class="form-control" name="couponName" id="couponName">
-                    </div>
-                    <div class="mb-3">
-                      <label for="recipient-name" class="col-form-label">Discount Amount</label>
-                      <input type="text" class="form-control" name="couponAmount" id="couponAmount">
-                    </div>
-                    <div class="mb-3">
-                      <label for="recipient-name" class="col-form-label">Expired On</label>
+                      <div id="couponNameError" style="color: red;"></div>
+                  </div>
+                  <div class="mb-3">
+                      <label for="couponDiscount" class="col-form-label">Discount ( in % )</label>
+                      <input type="text" class="form-control" name="couponDiscount" id="couponDiscount">
+                      <div id="couponDiscountError" style="color: red;"></div>
+                  </div>
+                  <div class="mb-3">
+                      <label for="couponExpiry" class="col-form-label">Expired On</label>
                       <input type="date" class="form-control" name="couponExpiry" id="couponExpiry" placeholder="DD/MM/YYYY">
-                    </div>
-        
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-" style="background-color: lightskyblue">Create Coupon</button>
-                    </div>
-        
-                  </form>
-                </div>
-        
+                  </div>
+              
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" id="addCouponSubmit" class="btn btn-dark" style="background-color:lightskyblue">Create Coupon</button>
+                  </div>
+              </form>
+              
               </div>
+      
             </div>
           </div>
+        </div>
 
-          <div class="modal fade" id="editCoupon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Edit Coupon </h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form action="/editCoupon" method="post">
-                    <div class="mb-3">
-                      <label for="recipient-name" class="col-form-label">Coupon Name</label>
-                      <input type="text" class="form-control" name="couponName" id="couponNme">
-                    </div>
-        
-                    <div class="mb-3">
-                      <label for="recipient-name" class="col-form-label">Discount Amount</label>
-                      <input type="text" class="form-control" name="couponAmount" id="couponAmont">
-                    </div>
-                    <div class="mb-3">
-                      <label for="recipient-name" class="col-form-label">Expired On (YYYY/MM/DD)</label>
-                      <input type="date" class="form-control" name="couponExpiry" id="couponExpiring">
-                    </div>
-                    <div class="mb-3">
-                      <input type="hidden" class="form-control" id="couponId" name="couponId" />
-                    </div>
-        
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary" style="background-color: lightskyblue">Update Coupon</button>
-                    </div>
-        
-                  </form>
-                </div>
-        
+        <div class="modal fade" id="editCoupon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Coupon </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
+              <div class="modal-body">
+                <form action="/editCoupon" method="post" id="editCouponForm">
+                  <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">Coupon Name</label>
+                    <input type="text" class="form-control" name="couponName1" id="couponName1">
+                    <div id="couponNameError1" style="color: red;"></div>
+                  </div>
+      
+                  <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">Discount ( in % )</label>
+                    <input type="text" class="form-control" name="couponDiscount1" id="couponDiscount1">
+                    <div id="couponDiscountError1" style="color: red;"></div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">Expired On (YYYY/MM/DD)</label>
+                    <input type="date" class="form-control" name="couponExpiry1" id="couponExpiring1">
+                  </div>
+                  <div class="mb-3">
+                    <input type="hidden" class="form-control" id="couponId1" name="couponId1" />
+                  </div>
+      
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" id="editCouponSubmit" class="btn btn-primary" style="background-color:lightskyblue">Update Coupon</button>
+                  </div>
+      
+                </form>
+              </div>
+      
             </div>
           </div>
+        </div>
         
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
@@ -426,30 +430,8 @@
     <!-- Script tag for toastify-js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js"></script>
 
-    <script>
-        function editCoupon(couponId) {
-          console.log("clicked", couponId);
-          $.ajax({
-            url: "/admin/editCoupon/" + couponId,
-            method: 'GET',
-          })
-            .done((response) => {
-              if (response) {
-                document.getElementById('couponNme').value = response.couponData.couponName;
-                document.getElementById('couponAmont').value = response.couponData.discount;
-                document.getElementById('couponExpiring').value = response.couponData.expiryDate;
-                document.getElementById('couponId').value = response.couponData._id;
-    
-                $("#editCoupon").modal("show");
-    
-              }
-            })
-            .fail((error) => {
-              console.log(error);
-            })
-    
-        }
-      </script>
+  
+       
 
 <script>
     $(document).ready(function () {
@@ -508,10 +490,10 @@
       })
         .done((response) => {
           if (response) {
-            document.getElementById('couponNme').value = response.couponData.couponName;
-            document.getElementById('couponAmont').value = response.couponData.discount;
-            document.getElementById('couponExpiring').value = response.couponData.expiryDate;
-            document.getElementById('couponId').value = response.couponData._id;
+            document.getElementById('couponName1').value = response.couponData.couponName;
+            document.getElementById('couponDiscount1').value = response.couponData.discount;
+            document.getElementById('couponExpiring1').value = response.couponData.expiryDate;
+            document.getElementById('couponId1').value = response.couponData._id;
 
             $("#editCoupon").modal("show");
 
@@ -530,6 +512,84 @@
     // Set the minimum date for the input field to today
     document.getElementById('couponExpiry').min = today;
   </script>
+
+<script>
+  function validateForm() {
+    var couponName = document.getElementById("couponName").value;
+    var couponDiscount = document.getElementById("couponDiscount").value;
+    console.log(couponName,couponDiscount);
+    var couponNameError = document.getElementById("couponNameError");
+    var couponDiscountError = document.getElementById("couponDiscountError");
+
+    document.getElementById('couponNameError').innerHTML = "";
+    document.getElementById('couponDiscountError').innerHTML = "";
+
+    // Validate couponName
+    if (!couponName.match(/^[a-zA-Z0-9\s]+$/) || couponName.trim() == "") {
+      document.getElementById('couponNameError').innerText = "Coupon name can only contain letters, numbers, and spaces.";
+      return false;
+    }
+
+    // Validate couponDiscount
+    if (couponDiscount === "") {
+      document.getElementById('couponDiscountError').innerText = "Please enter a discount value.";
+      return false;
+    }
+
+    // Check if couponDiscount is a valid number and within range
+    if (isNaN(couponDiscount) || parseFloat(couponDiscount) < 0 || parseFloat(couponDiscount) > 99) {
+      document.getElementById('couponDiscountError').innerText = "Enter a valid value";
+      return false;
+    }
+
+    return true;
+  }
+  
+  document.getElementById("addCouponSubmit").addEventListener("click", function(event) {
+    if (!validateForm()) {
+      event.preventDefault();
+    }
+  });
+</script>
+
+<script>
+  function validateForm1() { 
+    var couponName = document.getElementById("couponName1").value;
+    var couponDiscount = document.getElementById("couponDiscount1").value;
+    console.log(couponName,couponDiscount);
+    var couponNameError = document.getElementById("couponNameError1");
+    var couponDiscountError = document.getElementById("couponDiscountError1");
+
+    document.getElementById('couponNameError1').innerHTML = "";
+    document.getElementById('couponDiscountError1').innerHTML = "";
+
+    // Validate couponName
+    if (!couponName.match(/^[a-zA-Z0-9\s]+$/) || couponName.trim() == "") {
+      document.getElementById('couponNameError1').innerText = "Coupon name can only contain letters, numbers, and spaces.";
+      return false;
+    }
+
+    // Validate couponDiscount
+    if (couponDiscount === "") {
+      document.getElementById('couponDiscountError1').innerText = "Please enter a discount value.";
+      return false;
+    }
+
+    // Check if couponDiscount is a valid number and within range
+    if (isNaN(couponDiscount) || parseFloat(couponDiscount) < 0 || parseFloat(couponDiscount) > 99) {
+      document.getElementById('couponDiscountError1').innerText = "Enter a valid value";
+      return false;
+    }
+
+    return true;
+  }
+  
+  document.getElementById("editCouponSubmit").addEventListener("click", function(event) {
+    if (!validateForm1()) {
+      event.preventDefault();
+    }
+  });
+</script>
 </body>
 
 

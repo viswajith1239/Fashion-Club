@@ -39,7 +39,7 @@ const findAllCoupons = () => {
       const coupon = new couponModel({
         couponName: couponData.couponName,
         code: couponCode[0],
-        discount: couponData.couponAmount,
+        discount: couponData.couponDiscount,
         expiryDate: convertedDate,
       });
   
@@ -78,7 +78,7 @@ const findAllCoupons = () => {
         _id: editedCouponData.couponId,
       });
       coupon.couponName = editedCouponData.couponName;
-      coupon.discount = editedCouponData.couponAmount;
+      coupon.discount = editedCouponData.coupondiscount;
       coupon.expiryDate = editedCouponData.couponExpiry;
   
       await coupon.save();
@@ -94,6 +94,7 @@ const findAllCoupons = () => {
           let cart = await cartModel.findOne({ user: new ObjectId(userId)});
           console.log(cart)
           const discount = coupon.discount;
+          console.log("hello thi is discount",discount);
   
           cart.totalAmount = cart.totalAmount - discount;
           cart.coupon = couponCode;
@@ -101,8 +102,7 @@ const findAllCoupons = () => {
           await cart.save();
           console.log(cart)
   
-          coupon.usedBy.push(userId);
-          await coupon.save();
+       
   
           resolve({
             discount,

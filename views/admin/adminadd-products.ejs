@@ -303,7 +303,31 @@
                                 <div id="errorMessage" style="color: red; display: none;">Only images are allowed.</div>
                                 <input type="hidden"   name="oldImage">
                                 <div id="previewContainer" class="row"></div>
-                               
+
+                                <script>
+                                    document.getElementById('imageUpload').addEventListener('change', function(event) {
+                                        var files = event.target.files;
+                                    
+                                        // Clear previous previews
+                                        document.getElementById('previewContainer').innerHTML = '';
+                                    
+                                        for (var i = 0; i < files.length; i++) {
+                                            var file = files[i];
+                                            var reader = new FileReader();
+                                    
+                                            reader.onload = function(e) {
+                                                var img = document.createElement('img');
+                                                img.src = e.target.result;
+                                                img.style.maxWidth = '100px';
+                                                img.style.maxHeight = '100px';
+                                                document.getElementById('previewContainer').appendChild(img);
+                                            };
+                                    
+                                            // Read the file as a data URL
+                                            reader.readAsDataURL(file);
+                                        }
+                                    });
+                                    </script>
                             </div>
                             
                         </div>
@@ -313,7 +337,7 @@
                                     <div class="col-sm-6 mb-3">
                                         <label class="form-label">Category</label>
                                         <select class="form-select" style="width: auto;" name="productCategory">
-                                            
+                                            <option>all categories</option>
                                             <% for( let i=0; i < categories.length; i++ ) { %>
                                                 <% if (categories[i].islisted) { %>
                                                     <option value="<%= categories[i]._id %>">

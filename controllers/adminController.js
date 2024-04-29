@@ -19,9 +19,10 @@ const Loadproductlists=async(req,res)=>{
     }
 }
 
-const Loadaddproducts=(req,res)=>{
+const Loadaddproducts=async(req,res)=>{
     try{
-        res.render('admin/adminadd-products')
+    
+        res.render('admin/adminadd-products',{ })
     }catch(error){
         console.log(error);
     }

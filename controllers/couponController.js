@@ -29,10 +29,10 @@ const adminCoupon=async(req,res)=>{
 
   const addCoupon = async (req, res) => {
     try {
-      if (req.body.couponAmount > 1000) {
+      if (req.body.couponDiscount > 1000) {
         req.flash("message", "Max Coupon Amount Exceeded");
         res.redirect("/admin-coupon");
-      } else if (req.body.couponAmount < 1) {
+      } else if (req.body.couponDiscount < 1) {
         req.flash("message", "Minimum Coupon Amount Not Met");
         res.redirect('/admin-coupon');
       } else {
@@ -87,7 +87,8 @@ const adminCoupon=async(req,res)=>{
     try {
       const price = parseInt(req.query.price);
       const userId = req.session.user;
-      const couponCode = req.body.couponCode;
+      const couponCode = req.query.couponCode;
+      console.log("this is copon coee",couponCode);
       if (price > 1500) {
         const result = await couponHelper.applyCoupon(userId, couponCode);
         console.log(result);

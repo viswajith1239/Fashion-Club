@@ -686,7 +686,7 @@
                               <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
                               <form action="/applyCoupon" method="post" id="couponForm">
                                 <div class="form-group">
-                                  <input type="text" placeholder="Enter Coupon Code..." name="couponCode">
+                                  <input type="text" placeholder="Enter Coupon Code..." name="couponCode" id="couponCodeEnter">
                                 </div>
                                 <div class="form-group">
                                   <button class="btn  btn-md" name="login" style="background-color: lightskyblue;" type="submit">Apply
@@ -803,6 +803,15 @@
                                                                 <%= totalandSubTotal %>
                                                             <% } %>
                                                         </span></td>
+                                                </tr>
+
+                                                <tr >
+                                                    <th style="display: none;" >coupon code</th>
+                                                    <td style="display: none;"couponCodeTable">
+                                                        <% if (cartItems.couponAmount>0) { %>
+                                                            <span> <%=cartItems.coupon %> </span>
+                                                            <% } %>
+                                                    </td>
                                                 </tr>
                                     </tbody>
                                 </table>
@@ -1218,9 +1227,13 @@
           $("#placeOrder").click(function () {
             let address = $("input[name='address']:checked").val();
             let payment = $("input[name='payment_option']:checked").val();
+            let code = document.getElementById("couponCodeTable").textContent.trim();
+            console.log("thisis code",code);
+
             const data = {
               addressId: address,
               paymentOption: payment,
+              couponCode: code
             }
             const totalAmount = document.getElementById("totalAmount").textContent;
             console.log("haiii",data,totalAmount);
@@ -1348,6 +1361,7 @@
                                         data:({
                                             addressId: address,
                                             paymentOption: payment,
+                                            couponCode: code
                                         }),
                                         success: function (data) {
                                             console.log(data);
@@ -1378,65 +1392,60 @@
 
 <script>
     $(document).ready(function () {
-      const price = convertRupeeToNumber(document.getElementById("totalAmount").textContent)
-      function convertRupeeToNumber(rupeeString) {
-        const numberString = rupeeString.replace(/₹|,/g, "");
-        return parseInt(numberString);
-      }
-      console.log(price);
-      $("#couponForm").submit(function (event) {
-        console.log("hey")
-        event.preventDefault();
-        let formData = $(this).serialize();
-        console.log(formData)
-        $.ajax({
-          url: `/applyCoupon?price=${price}`,
-          method: "POST",
-          data: formData,
-          success: (response) => {
-            if (response.status) {
-              Toastify({
-                text: `${response.message}`,
-                duration: 3000,
-                gravity: "top",
-                position: "center",
-                stopOnFocus: true,
-                style: {
-                  background: "green",
+        const price = document.getElementById("totalAmount").innerText.trim()
+
+        $("#couponForm").submit(function (event) {
+
+            event.preventDefault();
+            let formData = $("#couponCodeEnter").val();
+            console.log("this is formdata", formData)
+            $.ajax({
+                url: `/applyCoupon?price=${price}&couponCode=${formData}`,
+                method: "POST",
+                success: (response) => {
+                    if (response.status) {
+                        Toastify({
+                            text:` ${response.message}`,
+                            duration: 3000,
+                            gravity: "top",
+                            position: "center",
+                            stopOnFocus: true,
+                            style: {
+                                background: "green",
+                            },
+                        }).showToast();
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
+
+
+                    } else {
+                        Toastify({
+                            text:`${response.message}`,
+                            duration: 3000,
+                            gravity: "top",
+                            position: "center",
+                            stopOnFocus: true,
+                            style: {
+                                background: "red",
+                            },
+                        }).showToast();
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
+                    }
+
                 },
-              }).showToast();
-              setTimeout(() => {
-                location.reload();
-              }, 1000);
+                error: (error) => {
+                    console.log(error)
+                }
+            })
 
 
-            } else {
-              Toastify({
-                text: `${response.message}`,
-                duration: 3000,
-                gravity: "top",
-                position: "center",
-                stopOnFocus: true,
-                style: {
-                  background: "red",
-                },
-              }).showToast();
-              setTimeout(() => {
-                location.reload();
-              }, 1000);
-            }
-
-          },
-          error: (error) => {
-            console.log(error)
-          }
         })
 
-
-      })
-
     })
-  </script>
+</script>
 
 
 

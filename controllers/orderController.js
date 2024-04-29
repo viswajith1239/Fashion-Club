@@ -107,10 +107,16 @@ const checkoutpage = async (req, res) => {
     const status = req.body.status;
    
     const userId = req.session.user;
+    console.log("this is body",body.couponCode);
+    let coupon = await couponModel.findOne({ code: body.couponCode })
     
     
+    console.log("this is coupon",coupon);
     const result = await orderHelper.placeOrder(body, userId);
     if (result.status) {
+    
+      coupon.usedBy.push(userId);
+      await coupon.save();
       const cart = await cartHelper.clearAllCartItems(userId);
       if (cart) {
         res.json({ url: "/ordersuccesspage" ,status:true});
