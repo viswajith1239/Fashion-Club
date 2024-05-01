@@ -122,7 +122,7 @@ const getAllOffersOfProducts = () => {
   const editCategoryOffer = (data) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(data.categoryName)
+        console.log("thsiis data discount",data.offerDiscount1)
         const result = await offerModel.updateOne(
           { _id: data.offerId },
           {

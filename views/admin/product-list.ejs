@@ -310,6 +310,8 @@
 
                     </tbody>
                 </table>
+                <button class="button" onclick="prev('<%=page%>','<%=totalPage%>')">prev</button>
+                <button class="button" onclick="next('<%=page%>','<%=totalPage%>')">next</button>
             </div>
         </div>
     </div>
@@ -334,6 +336,23 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script>
+    function prev(page, totalPage) {
+        page = parseInt(page);
+        if (page > 1) {
+            window.location.href = `/product-list?page=${page - 1}`;
+        }
+    }
+
+    function next(page, totalPage) {
+        console.log('next');
+        page = parseInt(page);
+        totalPage = parseInt(totalPage);
+        if (page < totalPage) {
+            window.location.href = `/product-list?page=${page + 1}`;
+        }
+    }
+</script>
 
 
     <script>

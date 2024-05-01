@@ -691,6 +691,8 @@
                                 <div class="form-group">
                                   <button class="btn  btn-md" name="login" style="background-color: lightskyblue;" type="submit">Apply
                                     Coupon</button>
+                                    <button class="btn  btn-md" name="login" style="background-color: red;" type="submit">Remove 
+                                        Coupon</button>
                                 </div>
                               </form>
                             </div>
@@ -807,7 +809,7 @@
 
                                                 <tr >
                                                     <th style="display: none;" >coupon code</th>
-                                                    <td style="display: none;"couponCodeTable">
+                                                    <td id="couponCodeTable" style="display: none;">
                                                         <% if (cartItems.couponAmount>0) { %>
                                                             <span> <%=cartItems.coupon %> </span>
                                                             <% } %>
@@ -1227,7 +1229,7 @@
           $("#placeOrder").click(function () {
             let address = $("input[name='address']:checked").val();
             let payment = $("input[name='payment_option']:checked").val();
-            let code = document.getElementById("couponCodeTable").textContent.trim();
+            let code = document.getElementById("couponCodeTable").textContent.trim()
             console.log("thisis code",code);
 
             const data = {

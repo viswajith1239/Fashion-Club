@@ -9,14 +9,21 @@ const offerModel=require("../models/offerModel")
 
 const productofferLoad=async(req,res)=>{
     try {
-        const offers = await offerHelper.getAllOffersOfProducts();
+      const page = req.query.page || 1;
+      const startIndex = (page-1) * 6;
+      const endIndex = page*6;
+      const productcount= await offerModel.find().count()
+      const totalPage = Math.ceil(productcount/6);
+      const offer= await offerModel.find().skip(startIndex).limit(6)
+        let offers = await offerHelper.getAllOffersOfProducts();
         const products = await productHelper.getAllProducts();
         const message = req.flash("message");
+        offers = offers.slice(startIndex,endIndex);
         if (message.length > 0) {
           console.log(message);
-        res.render("admin/admin-productoffer",{offers,products,message})
+        res.render("admin/admin-productoffer",{offers,products,message,page,totalPage,offer})
     } else {
-        res.render("admin/admin-productoffer", { offers, products });
+        res.render("admin/admin-productoffer", { offers, products,page,totalPage,offer });
       }
     } catch (error) {
         console.log(error);
@@ -64,14 +71,21 @@ const productAddOffer = async (req, res) => {
 
   const categoryofferLoad=async(req,res)=>{
     try {
-      const offers = await offerHelper.getAllOffersOfCategories();
+        const page = req.query.page || 1;
+        const startIndex = (page-1) * 6;
+        const endIndex = page*6;
+      const productcount= await offerModel.find().count()
+      const totalPage = Math.ceil(productcount/6);
+      const offer= await offerModel.find().skip(startIndex).limit(6)
+      let offers = await offerHelper.getAllOffersOfCategories();
       const categories = await categoryHelper.getAllActiveCategory();
       const message = req.flash("message");
+      offers = offers.slice(startIndex,endIndex);
       if (message.length > 0) {
         console.log(message);
-      res.render("admin/admin-categoryoffer",{offers,categories,message})
+      res.render("admin/admin-categoryoffer",{offers,categories,message,page,totalPage,offer})
     } else {
-      res.render("admin/admin-categoryoffer", { offers, categories });
+      res.render("admin/admin-categoryoffer", { offers, categories,page,totalPage,offer });
     }
     } catch (error) {
       console.log(error);

@@ -249,6 +249,8 @@
                             <% } %>
               
                       </div>
+                      <button class="button" onclick="prev('<%=page%>','<%=totalPage%>')">prev</button>
+                      <button class="button" onclick="next('<%=page%>','<%=totalPage%>')">next</button>
 
                 </div> <!-- card-body end// -->
             </div> <!-- card end// -->
@@ -287,6 +289,23 @@
     <script src="/public/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/public/admin-assets/js/main.js" type="text/javascript"></script>
+    <script>
+        function prev(page, totalPage) {
+            page = parseInt(page);
+            if (page > 1) {
+                window.location.href = `/admin-orders?page=${page - 1}`;
+            }
+        }
+    
+        function next(page, totalPage) {
+            console.log('next');
+            page = parseInt(page);
+            totalPage = parseInt(totalPage);
+            if (page < totalPage) {
+                window.location.href = `/admin-orders?page=${page + 1}`;
+            }
+        }
+    </script>
 </body>
 
 

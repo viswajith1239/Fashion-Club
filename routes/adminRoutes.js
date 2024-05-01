@@ -29,7 +29,7 @@ router.get("/admin-productoffer", adminMiddleware.islogoutAdmin, offerController
 router.get("/productEditOffer/:id", adminMiddleware.islogoutAdmin, offerController.productEditLoad);
 router.get("/admin-categoryoffer", adminMiddleware.islogoutAdmin, offerController.categoryofferLoad)
 router.get("/categoryEditOffer/:id", adminMiddleware.islogoutAdmin, offerController.categoryEditLoad);
-router.get("/admin-salesReport",adminMiddleware.islogoutAdmin, orderController.loadSalesReport);
+router.get("/admin-salesReport",adminMiddleware.islogoutAdmin, orderController.SalesReportload );
 
 
 
@@ -54,7 +54,7 @@ router.post("/productAddOffer", adminMiddleware.islogoutAdmin, offerController.p
 router.post("/productEditOffer", adminMiddleware.islogoutAdmin, offerController.productEditOffer);
 router.post("/categoryAddOffer", adminMiddleware.islogoutAdmin, offerController.addCategoryOffer);
 router.post("/categoryEditOffer", adminMiddleware.islogoutAdmin, offerController.categoryEditOffer);
-router.post("/admin-salesReport",adminMiddleware.islogoutAdmin, orderController.loadSalesReportDateSort);
+router.post("/admin-salesReport",adminMiddleware.islogoutAdmin, orderController.SalesReportDateSortload);
 
 router.delete("/deleteCoupon/:id", adminMiddleware.islogoutAdmin, couponController.deleteCoupon)
 

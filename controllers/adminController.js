@@ -11,9 +11,13 @@ const fs =require("fs")
 
 const Loadproductlists=async(req,res)=>{
     try{
-      const products= await product.find().populate('category')
+      const page = req.query.page || 1;
+      const startIndex = (page-1) * 6;
+      const productcount= await product.find().count()
+      const totalPage = Math.ceil(productcount/6);
+      const products= await product.find().populate('category').skip(startIndex).limit(6)
       console.log(products);
-        res.render('admin/product-list',{products})
+        res.render('admin/product-list',{products,page,totalPage})
     }catch(error){
         console.log(error);
     }
@@ -31,9 +35,13 @@ const Loadaddproducts=async(req,res)=>{
 
 const LoadadminuserEdit= async (req,res)=>{
     try{
-        const users = await user.find()
+      const page = req.query.page || 1;
+      const startIndex = (page-1) * 6;
+      const productcount= await user.find().count()
+      const totalPage = Math.ceil(productcount/6);
+        const users = await user.find().skip(startIndex).limit(6)
         
-        res.render('admin/admin-userEdit',{users})
+        res.render('admin/admin-userEdit',{users,page,totalPage})
     }catch(error){
         console.log(error);
     }
@@ -41,8 +49,12 @@ const LoadadminuserEdit= async (req,res)=>{
 
 const LoadadminCategories=async(req,res)=>{
     try{
-        const categories= await category.find()
-        res.render('admin/admin-category',{categories})
+      const page = req.query.page || 1;
+      const startIndex = (page-1) * 6;
+      const productcount= await category.find().count()
+      const totalPage = Math.ceil(productcount/6);
+        const categories= await category.find().skip(startIndex).limit(6)
+        res.render('admin/admin-category',{categories,page,totalPage})
     }catch(error){
         console.log(error);
     }

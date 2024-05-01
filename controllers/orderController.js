@@ -6,6 +6,7 @@ const orderHelper=require("../helper/orderHelper")
 const couponHelper=require("../helper/couponHelper")
 const moment=require("moment")
 const couponModel=require("../models/couponModel")
+const orderModel=require("../models/orderModel")
 const Razorpay = require("razorpay");
 
 var razorpay = new Razorpay({
@@ -101,30 +102,60 @@ const checkoutpage = async (req, res) => {
 }
 
 
-  const placeOrder = async (req, res) => {
+  // const placeOrder = async (req, res) => {
    
+  //   const body = req.body;
+  //   const status = req.body.status;
+   
+  //   const userId = req.session.user;
+  //   console.log("this is body",body.couponCode);
+  //   let coupon = await couponModel.findOne({ code: body.couponCode })
+    
+    
+  //   console.log("this is coupon",coupon);
+  //   const result = await orderHelper.placeOrder(body, userId);
+  //   if (result.status) {
+    
+  //     coupon.usedBy.push(userId);
+  //     await coupon.save();
+  //     const cart = await cartHelper.clearAllCartItems(userId);
+  //     if (cart) {
+  //       res.json({ url: "/ordersuccesspage" ,status:true});
+  //     }
+  //   } else {
+  //     res.json({message:result.message,status:false})
+  //   }
+  // };
+
+  const placeOrder = async (req, res) => {
     const body = req.body;
     const status = req.body.status;
    
     const userId = req.session.user;
-    console.log("this is body",body.couponCode);
-    let coupon = await couponModel.findOne({ code: body.couponCode })
+    console.log("this is body", body.couponCode);
     
+    let coupon = await couponModel.findOne({ code: body.couponCode });
     
-    console.log("this is coupon",coupon);
+    console.log("this is coupon", coupon);
+    
     const result = await orderHelper.placeOrder(body, userId);
-    if (result.status) {
     
-      coupon.usedBy.push(userId);
-      await coupon.save();
-      const cart = await cartHelper.clearAllCartItems(userId);
-      if (cart) {
-        res.json({ url: "/ordersuccesspage" ,status:true});
-      }
+    if (result.status) {
+        if (coupon) {
+            coupon.usedBy.push(userId);
+            await coupon.save();
+        }
+        
+        const cart = await cartHelper.clearAllCartItems(userId);
+        
+        if (cart) {
+            res.json({ url: "/ordersuccesspage", status: true });
+        }
     } else {
-      res.json({message:result.message,status:false})
+        res.json({ message: result.message, status: false });
     }
-  };
+};
+
   
 
   
@@ -162,13 +193,20 @@ const checkoutpage = async (req, res) => {
 
   const orderspage = async(req,res)=>{
     try {
-      const allOrders = await orderHelper.getAllOrders();
+      const page = req.query.page || 1;
+      const startIndex = (page-1) * 6;
+      const endIndex = page*6;
+      const productcount= await orderModel.find().count()
+   
+      const totalPage = Math.ceil(productcount/6);
+      const orders= await orderModel.find().skip(startIndex).limit(6)
+      let allOrders = await orderHelper.getAllOrders();
       for (const order of allOrders) {
         const dateString = order.orderedOn;
         order.formattedDate = moment(dateString).format("MMMM Do, YYYY");
       }
-  
-      res.render("admin/admin-orderspage", { allOrders });
+      allOrders = allOrders.slice(startIndex,endIndex);
+      res.render("admin/admin-orderspage", {orders,allOrders,page,totalPage });
     } catch (error) {
       console.log(error);
     }
@@ -265,6 +303,22 @@ const checkoutpage = async (req, res) => {
       console.log(error);
     }
   };
+
+  const returnSingleOrder = async (req, res) => {
+    try {
+      const orderId = req.query.orderId;
+      const singleOrderId = req.query.singleOrderId;
+      const price = req.query.price;
+      const result = await orderHelper.returnSingleOrder(orderId, singleOrderId,price);
+      if (result) {
+        res.json({ status: true });
+      } else {
+        res.json({ status: false });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const orderFailedPageLoad = (req, res) => {
     res.render("user/orderFailure-page");
   };
@@ -295,12 +349,13 @@ const checkoutpage = async (req, res) => {
 
 
 
-  const loadSalesReport = async (req, res) => {
+  const SalesReportload = async (req, res) => {
     try {
-      orderHelper
-        .salesReport()
-        .then((response) => {
-          console.log(response);
+      const page = req.query.page || 1;
+      const startIndex = (page-1) * 6;
+      const endIndex = page*6;
+      orderHelper .salesReport().then((response) => {
+          console.log("this is respos",response);
           response.forEach((order) => {
             const orderDate = new Date(order.orderedOn);
             const formattedDate = orderDate.toLocaleDateString("en-GB", {
@@ -310,8 +365,10 @@ const checkoutpage = async (req, res) => {
             });
             order.orderedOn = formattedDate;
           });
-  
-          res.render("admin/admin-salesReport", { sales: response });
+          const productcount= response.length
+          const totalPage = Math.ceil(productcount/6);
+          response = response.slice(startIndex,endIndex)
+          res.render("admin/admin-salesReport", { sales: response, page,totalPage});
         })
         .catch((error) => {
           console.log(error);
@@ -321,13 +378,11 @@ const checkoutpage = async (req, res) => {
     }
   };
 
-  const loadSalesReportDateSort = async (req, res) => {
+  const SalesReportDateSortload = async (req, res) => {
     const startDate = req.body.startDate;
     const endDate = req.body.endDate;
     console.log(startDate, endDate);
-    orderHelper
-      .salesReportDateSort(startDate, endDate)
-      .then((response) => {
+    orderHelper.salesReportDateSort(startDate, endDate).then((response) => {
         console.log(response);
         response.forEach((order) => {
           const orderDate = new Date(order.orderedOn);
@@ -356,9 +411,9 @@ const checkoutpage = async (req, res) => {
     cancelSingleOrder,
     changeOrderStatus,
     createOrder,
-    loadSalesReport,
+    SalesReportload ,
     orderFailedPageLoad,
-    loadSalesReportDateSort,
-    paymentSuccess
- 
+    SalesReportDateSortload,
+    paymentSuccess,
+    returnSingleOrder
   }

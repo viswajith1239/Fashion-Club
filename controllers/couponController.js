@@ -1,20 +1,29 @@
 const couponHelper=require("../helper/couponHelper")
+const couponModel=require("../models/couponModel")
 
 
 
 const adminCoupon=async(req,res)=>{
     try {
+      const page = req.query.page || 1;
+      const startIndex = (page-1) * 6;
+      const endIndex = page*6;
+      const productcount= await couponModel.find().count()
+      
+      const totalPage = Math.ceil(productcount/6);
+      const coupons= await couponModel.find().skip(startIndex).limit(6)
         let allCoupons = await couponHelper.findAllCoupons();
 
         for (let i = 0; i < allCoupons.length; i++) {
           allCoupons[i].discount = (allCoupons[i].discount);
           allCoupons[i].expiryDate =dateFormatter(allCoupons[i].expiryDate);
         }
+        allCoupons = allCoupons.slice(startIndex,endIndex);
         const message = req.flash("message");
     
         if (message) {
       res.render("admin/admin-coupon", {
-        coupons: allCoupons,message:message
+        coupons: allCoupons,message:message,coupons,page,totalPage
         })
     } else {
         res.render("admin/admin-coupon", {

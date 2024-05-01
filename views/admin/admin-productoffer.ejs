@@ -342,6 +342,9 @@
                             </tbody>
                           </table> <!-- table-responsive.// -->
                           <% } %>
+                          <button class="button" onclick="prev('<%=page%>','<%=totalPage%>')">prev</button>
+                          <button class="button" onclick="next('<%=page%>','<%=totalPage%>')">next</button>
+          
         
                 </div>
               </div> <!-- card-body end// -->
@@ -481,6 +484,25 @@
     <script src="/public/admin-assets/js/main.js" type="text/javascript"></script>
     <!-- Script tag for toastify-js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js"></script>
+
+    
+<script>
+  function prev(page, totalPage) {
+      page = parseInt(page);
+      if (page > 1) {
+          window.location.href = `/admin-productoffer?page=${page - 1}`;
+      }
+  }
+
+  function next(page, totalPage) {
+      console.log('next');
+      page = parseInt(page);
+      totalPage = parseInt(totalPage);
+      if (page < totalPage) {
+          window.location.href = `/admin-productoffer?page=${page + 1}`;
+      }
+  }
+</script>
 
     <script>
         function getOfferData(offerId) {

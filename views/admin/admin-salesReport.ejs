@@ -287,6 +287,9 @@
                       </tbody>
                    
                   </table>
+                  <button class="button" onclick="prev('<%=page%>','<%=totalPage%>')">prev</button>
+                  <button class="button" onclick="next('<%=page%>','<%=totalPage%>')">next</button>
+  
                   <!-- <input type="hidden" id="salesReportStore" value="ejsout sales "> -->
                 </div> <!-- table-responsive //end -->
               </div> <!-- card-body end// -->
@@ -306,7 +309,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 
-
+    <script>
+      function prev(page, totalPage) {
+          page = parseInt(page);
+          if (page > 1) {
+              window.location.href = `/admin-salesReport?page=${page - 1}`;
+          }
+      }
+  
+      function next(page, totalPage) {
+          console.log('next');
+          page = parseInt(page);
+          totalPage = parseInt(totalPage);
+          if (page < totalPage) {
+              window.location.href = `/admin-salesReport?page=${page + 1}`;
+          }
+      }
+  </script>
     <script>
         $('#date-wise-report').on('submit', function (e) {
           e.preventDefault();

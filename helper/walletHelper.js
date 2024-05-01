@@ -1,12 +1,14 @@
 const userModel = require("../models/userModel");
 
-const walletAmountAdding = async (userId, subTotal) => {
+const walletAmountAdding = async (userId,subTotal) => {
   console.log("enterd in to amount adding");
+
   try {
     // Fetching current user
     const user = await userModel.findById(userId);
+    console.log(user);
 
-    console.log(subTotal)
+    console.log("hello",subTotal)
     // Calculating new balance
     const currentBalance = user.wallet.balance;
     const amount = parseInt(subTotal);

@@ -207,6 +207,8 @@
                       </tbody>
                       
                     </table>
+                    <button class="button" onclick="prev('<%=page%>','<%=totalPage%>')">prev</button>
+                    <button class="button" onclick="next('<%=page%>','<%=totalPage%>')">next</button>
                 </div>
             </div>
             
@@ -227,6 +229,23 @@
             </div>
         </footer>
     </main>
+    <script>
+        function prev(page, totalPage) {
+            page = parseInt(page);
+            if (page > 1) {
+                window.location.href = `/admin-userEdit?page=${page - 1}`;
+            }
+        }
+    
+        function next(page, totalPage) {
+            console.log('next');
+            page = parseInt(page);
+            totalPage = parseInt(totalPage);
+            if (page < totalPage) {
+                window.location.href = `/admin-userEdit?page=${page + 1}`;
+            }
+        }
+    </script>
     <script>
 
 function blockUnblockUser(id, clicked, name) {
