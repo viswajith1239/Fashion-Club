@@ -69,6 +69,8 @@ const editedSave = async(req,res)=>{
         console.log(error);
     }
   }
+
+
   const getAllcategory = () => {
     return new Promise(async (resolve, reject) => {
       await categoryModel.find().then((result) => {

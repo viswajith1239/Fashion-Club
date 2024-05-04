@@ -198,6 +198,7 @@ const addProduct=(req,res)=>{
   productHelper
   .addProduct(body,files)
   .then((response)=>{
+    console.log("hello",response);
     res.redirect('/product-list')
   })
   .catch((error)=>{

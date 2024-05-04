@@ -13,6 +13,7 @@ const orderHelper=require("../helper/orderHelper")
 const cartHelper=require("../helper/cartHelper")
 const wishlistHelper=require("../helper/wishlistHelper")
 const offerHelper=require("../helper/offerHelper")
+const offerModel=require("../models/offerModel")
 
 const loginLoad = (req, res) => {
     try {
@@ -149,6 +150,8 @@ const insertUserWithVerify = async function (req, res) {
             console.log(userData);
             const respons = await signupHelper.doSignUp(userData)
             console.log(respons);
+
+            
             if (!respons.status) {
                 const error = respons.message
                 req.flash("message", error)
@@ -184,10 +187,26 @@ const Loaduserproduct = async (req, res) => {
     const products = await productModel.find({category:categoryId}) 
     .populate("category")
     .lean()
-    console.log(product.image);
-    console.log(product);
+   
+    const catresult=await offerModel.find({'categoryOffer.category':product.category})
+    const productresult=await offerModel.find({'productOffer.product':product._id})
+   
     
-       
+       if(catresult.length>0&&productresult.length>0){
+        product.categoryOffer=catresult[0].categoryOffer.discount
+        product.productOffer=productresult[0].productOffer.discount
+       }else if(catresult>0){
+        product.categoryOffer=catresult[0].categoryOffer.discount
+        product.productOffer= 0
+       }else if(productresult>0){
+        product.productOffer=productresult[0].productOffer.discount
+        product.categoryOffer= 0
+       }else{
+        product.productOffer= 0
+        product.categoryOffer= 0
+       }
+       console.log( "this is category offer",product.categoryOffer);
+       console.log( "this is product offer",product.productOffer);
         res.render('user/user-productpage', {
          product,products,
          userData,categories })

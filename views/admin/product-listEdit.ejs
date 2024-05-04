@@ -305,6 +305,7 @@
                                     <div class="col-sm-6 mb-3">
                                         <label class="form-label">Category</label>
                                         <select class="form-select" style="width: auto;" name="productCategory" >
+                                            <option>choose category..</option>
                                             <% for (let i=0; i < category.length; i++) { %>
                                                 <% if (category[i]._id.equals(product.category._id)) { %>
                                                     <option value="<%= category[i]._id %>" selected>

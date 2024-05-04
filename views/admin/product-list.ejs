@@ -257,7 +257,7 @@
                                             src="/public/uploads/<%= products[i].image[0] %>" alt="no image available">
                                         <% } else if (products[i].image) { %>
                                             <img class="img-thumbnail" width="80"
-                                                src="/public/uploads/<%= products[i].image %>"
+                                                src="/public/uploads/<%= products[i].image[0] %>"
                                                 alt="no image available">
                                             <% } else { %>
                                                 <span>No image available</span>
@@ -268,7 +268,7 @@
                                     <%= products[i].name %>
                                 </td>
                               
-                                    <td style="vertical-align: middle; padding-left: 1.5rem;" class="text" width="15%">    
+                                <td style="vertical-align: middle; padding-left: 1.5rem;" class="text" width="15%">    
                                         <%= products[i].category.name %></td>
                               
                                    

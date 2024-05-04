@@ -1,11 +1,15 @@
 const productModel = require("../models/productModel")
 const fs =require("fs")
+const sharp=require("sharp")
+const path = require("path")
 
 
 
 
 const addProduct = (data, files,req,res) => {
 
+  const { hiddenField1, hiddenField2, hiddenField3, hiddenField4, } = data;
+  console.log("hello",data);
 
   return new Promise(async (resolve, reject) => {
     console.log(data);
@@ -36,7 +40,7 @@ const addProduct = (data, files,req,res) => {
       },
     ];
 
-    await productModel
+     const newProduct =await productModel
       .create({
         name: data.name,
         description: data.description,
@@ -47,14 +51,81 @@ const addProduct = (data, files,req,res) => {
         totalQuantity: totalQuantity,
         image: images,
       })
-      .then((result) => {
-        resolve(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
-};
+console.log();
+      // const newProduct = await productModel.create(productAdding);
+
+      // Array to store promises for cropping operations
+      const cropPromises = [];
+
+      // Define cropImage function
+      async function cropImage(hiddenfield) {
+          return new Promise((resolve, reject) => {
+              let parts = hiddenfield.split(" ");
+              let ind = parseInt(parts[1]);
+              let x = parseInt(parts[3]);
+              let y = parseInt(parts[5]);
+              let width = parseInt(parts[7]);
+              let height = parseInt(parts[9]);
+      
+              let filename = newProduct.image[ind];
+              let inputPath = path.join(__dirname, `../public/uploads/${filename}`);
+              let outputPath = path.join(__dirname, `../public/uploads/cropped_${filename}`);
+      
+              sharp(inputPath)
+                  .extract({ left: x, top: y, width: width, height: height })
+                  .toFile(outputPath, (err) => {
+                      if (err) {
+                          console.error("Error cropping image:", err);
+                          reject(err);
+                      } else {
+                          // Update the product image path with the cropped image
+                          let croppedFilename = `cropped_${filename}`;
+                          newProduct.image[ind] = croppedFilename;
+      
+                          // try {
+                          //     // Attempt to unlink the file
+                          //     fs.unlinkSync(inputPath);
+                          //     console.log('File unlinked successfully');
+                          // } catch (err) {
+                          //     // Handle the error
+                          //     console.error('Error unlinking file:', err);
+                          //     // You can take further action here, such as retrying or notifying the user
+                          // }
+                          // // Resolve the promise
+                          resolve();
+                      }
+                  });
+          });
+      }
+      
+
+      // Push crop promises to array
+      if (hiddenField1) {
+          cropPromises.push(cropImage(hiddenField1));
+      }
+      if (hiddenField2) {
+          cropPromises.push(cropImage(hiddenField2));
+      }
+      if (hiddenField3) {
+          cropPromises.push(cropImage(hiddenField3));
+      }
+      if (hiddenField4) {
+          cropPromises.push(cropImage(hiddenField4));
+      }
+     
+      
+
+      // Wait for all crop promises to resolve
+      await Promise.all(cropPromises);
+
+      // Save the updated product after all cropping operations
+      await newProduct.save();
+
+      const message = "Product added successfully";
+      resolve(true)
+    })
+      
+}
 
 const checkDuplicateFunction = (body, productId) => {
     return new Promise(async (resolve, reject) => {
@@ -85,11 +156,188 @@ const checkDuplicateFunction = (body, productId) => {
     })
   }
 
+  // const editProductPost = async (req, res) => {
+  //   try {
+  //     const product = await productModel.findById(req.params.id);
+  //     if (!product) {
+
+  //       res.redirect("/productlist");
+  //     }
+     
+  //     const totalAmount =
+  //       parseInt(req.body.smallQuantity) +
+  //       parseInt(req.body.mediumQuantity) +
+  //       parseInt(req.body.largeQuantity);
+  //     console.log(totalAmount);
+  //     const check = await checkDuplicateFunction(
+  //       req.body,
+  //       req.params.id
+  //     );
+  //     const productQuantity = [
+  //       {
+  //         size:"S",
+  //         quantity:req.body.smallQuantity
+  //       },
+  //       {
+  //         size:"M",
+  //         quantity:req.body.mediumQuantity
+  //       },
+  //       {
+  //         size:"L",
+  //         quantity:req.body.largeQuantity
+  //       }
+  //     ]
+  //     switch (check.status) {
+  //       case 1:
+  //         product.name = req.body.productName;
+  //         product.productDescription = req.body.description;
+  //         product.productprice = req.body.productprice;
+  //         product.productQuantity = productQuantity;
+  //         product.totalQuantity = totalAmount;
+  //         product.category = req.body. productCategory;
+  //         product.productDiscount = req.body.productDiscount;
+  //         break;
+  //       case 2:
+  //         product.name = req.body.productName;
+  //         product.productDescription = req.body.description;
+  //         product.productprice = req.body.productprice;
+  //         product.productQuantity = productQuantity;
+  //         product.totalQuantity = totalAmount;
+  //         product.category = req.body.productCategory;
+  //         product.productDiscount = req.body.productDiscount;
+  //         break;
+  //       case 3:
+  //         console.log("Product already Exists");
+  //         break;
+  //       default:
+  //         console.log("error");
+  //         break;
+  //     }
+  //     if (req.files) {
+  //       const filenames = await editImages(
+  //         product.image,
+  //         req.files
+  //       );
+  //       if (filenames.status) {
+  //         product.image = filenames;
+  //       } else {
+  //         product.image = filenames;
+  //       }
+  //     }
+  //     await product.save();
+  //     res.redirect("/product-list");
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  // const editProductPost = async (req, res) => {
+  //   try {
+  //     const product = await productModel.findById(req.params.id);
+  //     if (!product) {
+  //       res.redirect("/productlist");
+  //     }
+     
+  //     const totalAmount =
+  //       parseInt(req.body.smallQuantity) +
+  //       parseInt(req.body.mediumQuantity) +
+  //       parseInt(req.body.largeQuantity);
+  //     console.log(totalAmount);
+  //     const check = await checkDuplicateFunction(
+  //       req.body,
+  //       req.params.id
+  //     );
+  //     const productQuantity = [
+  //       {
+  //         size:"S",
+  //         quantity:req.body.smallQuantity
+  //       },
+  //       {
+  //         size:"M",
+  //         quantity:req.body.mediumQuantity
+  //       },
+  //       {
+  //         size:"L",
+  //         quantity:req.body.largeQuantity
+  //       }
+  //     ]
+  //     switch (check.status) {
+  //       case 1:
+  //         product.name = req.body.productName;
+  //         product.productDescription = req.body.description;
+  //         product.productprice = req.body.productprice;
+  //         product.productQuantity = productQuantity;
+  //         product.totalQuantity = totalAmount;
+  //         product.category = req.body.productCategory;
+  //         product.productDiscount = req.body.productDiscount;
+  //         break;
+  //       case 2:
+  //         product.name = req.body.productName;
+  //         product.productDescription = req.body.description;
+  //         product.productprice = req.body.productprice;
+  //         product.productQuantity = productQuantity;
+  //         product.totalQuantity = totalAmount;
+  //         product.category = req.body.productCategory;
+  //         product.productDiscount = req.body.productDiscount;
+  //         break;
+  //       case 3:
+  //         console.log("Product already Exists");
+  //         break;
+  //       default:
+  //         console.log("error");
+  //         break;
+  //     }
+  //     if (req.files) {
+  //       const newFilenames = await editImages(
+  //         product.image,
+  //         req.files
+  //       );
+  //       // Check if there are existing filenames
+  //       if (product.image && product.image.length > 0) {
+  //         // Merge existing filenames with new filenames
+  //         product.image = [...product.image, ...newFilenames];
+  //       } else {
+  //         // If no existing filenames, simply assign new filenames
+  //         product.image = newFilenames;
+  //       }
+  //     }
+  //     await product.save();
+  //     res.redirect("/product-list");
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  
+ 
+
+  // const editImages = async (oldImages, newImages) => {
+  //   return new Promise((resolve, reject) => {
+  //     if (newImages && newImages.length > 0) {
+  //       // if new files are uploaded
+  //       let filenames = [];
+  //       for (let i = 0; i < newImages.length; i++) {
+  //         filenames.push(newImages[i].filename);
+  //       }
+  //       // delete old images if they exist
+  //       if (oldImages && oldImages.length > 0) {
+  //         for (let i = 0; i < oldImages.length; i++) {
+  //           fs.unlink("public/uploads/" + oldImages[i], (err) => {
+  //             if (err) {
+  //               reject(err);
+  //             }
+  //           });
+  //         }
+  //       }
+  //       resolve(filenames);
+  //     } else {
+  //       // use old images if new images are not uploaded
+  //       resolve(oldImages);
+  //     }
+  //   });
+  // }
   const editProductPost = async (req, res) => {
     try {
       const product = await productModel.findById(req.params.id);
       if (!product) {
-
         res.redirect("/productlist");
       }
      
@@ -123,7 +371,7 @@ const checkDuplicateFunction = (body, productId) => {
           product.productprice = req.body.productprice;
           product.productQuantity = productQuantity;
           product.totalQuantity = totalAmount;
-          product.category = req.body. productCategory;
+          product.category = req.body.productCategory;
           product.productDiscount = req.body.productDiscount;
           break;
         case 2:
@@ -143,14 +391,17 @@ const checkDuplicateFunction = (body, productId) => {
           break;
       }
       if (req.files) {
-        const filenames = await editImages(
+        const newFilenames = await editImages(
           product.image,
           req.files
         );
-        if (filenames.status) {
-          product.image = filenames;
+        // Check if there are existing filenames
+        if (product.image && product.image.length > 0) {
+          // Merge existing filenames with new filenames
+          product.image = [...product.image, ...newFilenames];
         } else {
-          product.image = filenames;
+          // If no existing filenames, simply assign new filenames
+          product.image = newFilenames;
         }
       }
       await product.save();
@@ -159,8 +410,7 @@ const checkDuplicateFunction = (body, productId) => {
       console.log(err);
     }
   };
- 
-
+  
   const editImages = async (oldImages, newImages) => {
     return new Promise((resolve, reject) => {
       if (newImages && newImages.length > 0) {
@@ -169,23 +419,15 @@ const checkDuplicateFunction = (body, productId) => {
         for (let i = 0; i < newImages.length; i++) {
           filenames.push(newImages[i].filename);
         }
-        // delete old images if they exist
-        if (oldImages && oldImages.length > 0) {
-          for (let i = 0; i < oldImages.length; i++) {
-            fs.unlink("public/uploads/" + oldImages[i], (err) => {
-              if (err) {
-                reject(err);
-              }
-            });
-          }
-        }
+        // resolve with new filenames without deleting old images
         resolve(filenames);
       } else {
-        // use old images if new images are not uploaded
+        // if no new images, resolve with old images without deleting anything
         resolve(oldImages);
       }
     });
   }
+  
 
   const getAllActiveProducts = () => {
     return new Promise(async (resolve, reject) => {

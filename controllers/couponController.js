@@ -100,7 +100,7 @@ const adminCoupon=async(req,res)=>{
       console.log("this is copon coee",couponCode);
       if (price > 1500) {
         const result = await couponHelper.applyCoupon(userId, couponCode);
-        console.log(result);
+        console.log(result,"discount value");
         if (result.status) {
           res.json({ result:result,status:true,message:"Coupon Applied Successfuly" }); 
         } else {

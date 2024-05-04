@@ -3,6 +3,7 @@ const cartModel=require('../models/cartModel')
 const category = require("../models/categoryModel")
 const productModel=require('../models/productModel')
 const userModel=require('../models/userModel')
+const offerModel=require("../models/offerModel")
 const ObjectId=require('mongoose').Types.ObjectId
 
 
@@ -11,6 +12,9 @@ const userCart=async(req,res)=>{
         const userData=req.session.user
         console.log(userData)
         const cartItems= await cartHelper.getAllCartItems(userData)
+         const productDiscounts = [];
+        const categoryDiscounts = [];
+
         
         console.log('cartitems',cartItems);
 
@@ -21,12 +25,28 @@ const userCart=async(req,res)=>{
 
             let totalAmountOfEachProduct = [];
             for (i = 0; i < cartItems.products.length; i++) {
+              const productId = cartItems.products[i].productItemId;
+              const product = await offerModel.findById(productId);
+              const productDiscount = product ? product.discount : 0;
+              productDiscounts.push(productDiscount);
+
+              const productCategory = product ? product.category : null;
+              const category = await offerModel.findOne({ category: productCategory });
+              const categoryDiscount = category ? category.discount : 0;
+              categoryDiscounts.push(categoryDiscount);
+              
+
               let total =
               cartItems.products[i].quantity * parseInt(cartItems.products[i].price);
               
               
               
               totalAmountOfEachProduct.push(total);
+            }
+            const maximumDiscounts = [];
+            for (let i = 0; i < productDiscounts.length; i++) {
+                const maximumDiscount = Math.max(productDiscounts[i], categoryDiscounts[i]);
+                maximumDiscounts.push(maximumDiscount);
             }
       
             
@@ -36,6 +56,7 @@ const userCart=async(req,res)=>{
             cartItems: cartItems ,
             totalAmount: totalandSubTotal,
             totalAmountOfEachProduct,
+            maximumDiscounts,
             status:true
             
           });
@@ -54,6 +75,10 @@ const userCart=async(req,res)=>{
         console.log(error);
     }
   }
+
+
+
+  
 const updateCartQuantity = async (req, res) => {
     
     const productId = req.query.productId;

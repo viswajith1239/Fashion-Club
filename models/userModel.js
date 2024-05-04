@@ -52,6 +52,12 @@ const userSchema=new mongoose.Schema({
         type:Boolean,
         required:true
     },
+    refferalCode: {
+        type: String,
+        uppercase: true,
+        unique: true,
+        default: generateCouponCode,
+    },
     wallet: {
         balance: { type: Number, default: 0 },
         details: [
@@ -69,5 +75,18 @@ const userSchema=new mongoose.Schema({
         ],
       },
 })
+
+
+function generateCouponCode() {
+    const length = 8;
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let couponCode = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      couponCode += characters.charAt(randomIndex);
+    }
+    return couponCode;
+  }
+  
 const User=mongoose.model('User',userSchema)
 module.exports=User

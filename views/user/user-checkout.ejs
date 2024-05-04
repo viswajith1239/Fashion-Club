@@ -691,8 +691,7 @@
                                 <div class="form-group">
                                   <button class="btn  btn-md" name="login" style="background-color: lightskyblue;" type="submit">Apply
                                     Coupon</button>
-                                    <button class="btn  btn-md" name="login" style="background-color: red;" type="submit">Remove 
-                                        Coupon</button>
+                                    <button class="coupon-btn cancel" type="button" id="remCoupon" onclick="removeCoup()">Cancel</button>
                                 </div>
                               </form>
                             </div>
@@ -775,7 +774,7 @@
                                                 <tr>
                                                     <th>SubTotal</th>
                                                     <td class="product-subtotal" colspan="2" class="text-dark">
-                                                        <span>₹ <%= totalandSubTotal %></span>
+                                                        <span id="subtotal">₹ <%= totalandSubTotal %></span>
 
 
                                                     </td>
@@ -785,9 +784,9 @@
                                                     <td colspan="2" class="text-dark">
                                                         <input id="carti" type="hidden" value="<%=cartItems %>">
                                                         <% if (cartItems.couponAmount>0) { %>
-                                                          <span>₹ <%=cartItems.couponAmount %></span>
+                                                          <span id="coupamount"> <%=cartItems.couponAmount %></span>
                                                             <script>
-                                                                console.log("cartitemis",document.getElementById('carti').value)
+                                                                console.log("cartitemi",document.getElementById('carti').value)
                                                             </script>
                                                           <% } else { %>
                                                             <span>No Coupons Applied</span>
@@ -800,7 +799,8 @@
                                                     <td colspan="2" class="product-subtotal"><span
                                                             class="font-xl text-dark fw-900" id="totalAmount">
                                                             <% if (cartItems.couponAmount > 0) { %>
-                                                                <%= totalandSubTotal - cartItems.couponAmount %>
+                                                               
+                                                                <%=Math.round(totalandSubTotal-(totalandSubTotal*cartItems.couponAmount/100))%>
                                                             <% } else { %>
                                                                 <%= totalandSubTotal %>
                                                             <% } %>
@@ -1110,6 +1110,30 @@
         }
 
 
+    </script>
+    <script>
+        function removeCoup() {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "center",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    },
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "Coupon Removed",
+                }).then((result) => {
+                
+               let  subtotal = document.getElementById('subtotal').innerHTML
+               document.getElementById("coupamount").innerHTML=subtotal
+
+                    // window.location.href = "/checkout";
+                });
+            }
     </script>
 
 
@@ -1448,6 +1472,8 @@
 
     })
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 
 
