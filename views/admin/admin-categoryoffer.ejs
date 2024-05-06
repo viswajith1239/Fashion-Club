@@ -417,7 +417,7 @@
                     <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Offer Name</label>
                       <input type="text" class="form-control" name="offerName1" id="offerName1">
-                      <div id="offerNameError" style="color: red;"></div>
+                      <div id="offerNameError1" style="color: red;"></div>
                     </div>
                     <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Category</label>
@@ -437,7 +437,7 @@
                     <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Discount Amount</label>
                       <input type="text" class="form-control" name="offerDiscount1" id="offerDiscount1">
-                      <div id="offerDiscountError" style="color: red;"></div>
+                      <div id="offerDiscountError1" style="color: red;"></div>
                     </div>
                     <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Starting Date (YYYY/MM/DD)</label>
@@ -527,10 +527,11 @@
             console.log(res)
             document.getElementById("categoryName1").value = res.categoryOffer.category
             document.getElementById('offerName1').value = res.offerName;
+            console.log("offername:",res.offerName);
             document.getElementById('offerDiscount1').value = res.categoryOffer.discount;
             document.getElementById('startDate1').value = convertDateFormat(res.formattedStartingDate)
             document.getElementById("endDate1").value = convertDateFormat(res.formattedEndingDate)
-            document.getElementById('offerId1').value = res._id;
+            document.getElementById('offerId').value = res._id;
 
             $("#editCoupon").modal("show");
 
@@ -660,7 +661,7 @@
 
     // Validate offerName
     if (!offerName.match(/^[a-zA-Z0-9\s]+$/) || offerName.trim() == "") {
-      document.getElementById('offerNameError').innerText = "Coupon name can only contain letters, numbers, and spaces.";
+      document.getElementById('offerNameError').innerText = "offer name can only contain letters, numbers, and spaces.";
       return false;
     }
 
@@ -695,12 +696,12 @@
     var offerNameError = document.getElementById("offerNameError1");
     var offerDiscountError = document.getElementById("offerDiscountError1");
 
-    offerNameError.innerHTML = "";
-    offerDiscountError.innerHTML = "";
+   document.getElementById("offerNameError1").innerHTML = "";
+   document.getElementById("offerDiscountError1").innerHTML = "";
 
     // Validate offerName
     if (!offerName.match(/^[a-zA-Z0-9\s]+$/) || offerName.trim() == "") {
-      document.getElementById('offerNameError1').innerText = "Coupon name can only contain letters, numbers, and spaces.";
+      document.getElementById('offerNameError1').innerText = "offer name can only contain letters, numbers, and spaces.";
       return false;
     }
 

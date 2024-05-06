@@ -61,11 +61,11 @@ const getAllOffersOfProducts = () => {
           { _id: data.offerId },
           {
             $set: {
-              offerName: data.offerName,
+              offerName: data.offerName1,
               startingDate: data.startDate,
               endingDate: data.endDate,
               "productOffer.product": data.productName,
-              "productOffer.discount": data.discountAmount,
+              "productOffer.discount": data.offerDiscount1,
               "productOffer.offerStatus": true,
             },
           }
@@ -120,11 +120,12 @@ const getAllOffersOfProducts = () => {
 
 
   const editCategoryOffer = (data) => {
+    console.log("data is ",data);
     return new Promise(async (resolve, reject) => {
       try {
         console.log("thsiis data discount",data.offerDiscount1)
         const result = await offerModel.updateOne(
-          { _id: data.offerId },
+          { _id: data.offerId1 },
           {
             $set: {
               offerName: data.offerName1,
@@ -134,7 +135,7 @@ const getAllOffersOfProducts = () => {
               "categoryOffer.discount": data.offerDiscount1,
               "categoryOffer.offerStatus": true,
             },
-          }
+          },{new:true}
         );
         resolve(result);
         console.log("resultis",result)
