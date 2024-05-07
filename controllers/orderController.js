@@ -52,14 +52,17 @@ const checkoutpage = async (req, res) => {
     const userId = req.session.user;
     const userData = await user.findById({ _id: userId })
     let cartItems = await cartHelper.getAllCartItems(userId);
+    console.log("hi",cartItems);
     let cart = await cartModel.findOne({ user: userId });
     const coupons = await couponHelper.findAllCoupons();
     let totalandSubTotal = await cartHelper.totalSubtotal(userId, cartItems);
+
     if (cart.coupon != null) {
       const appliedCoupon = await couponModel.findOne({ code: cart.coupon });
       cartItems.couponAmount = appliedCoupon.discount;
-  
+  console.log("d=>>>>>>>>>>>>>>>>>>>>>",cartItems.couponAmount);
       let totalAmountOfEachProduct = [];
+
       for (i = 0; i < cartItems.products.length; i++) {
         let total = cartItems.products[i].quantity * parseInt(cartItems.products[i].price);
         totalAmountOfEachProduct.push(total);
@@ -135,15 +138,21 @@ const checkoutpage = async (req, res) => {
     console.log("this is body", body.couponCode);
     
     let coupon = await couponModel.findOne({ code: body.couponCode });
+    let orderdata= await cartModel.find({user:userId})
+    console.log("========>",orderdata)
+  
     
     console.log("this is coupon", coupon);
     
-    const result = await orderHelper.placeOrder(body, userId);
+    const result = await orderHelper.placeOrder(body, userId,coupon);
+    console.log("thisis ",result)
     
     if (result.status) {
         if (coupon) {
             coupon.usedBy.push(userId);
+            
             await coupon.save();
+          
         }
         
         const cart = await cartHelper.clearAllCartItems(userId);

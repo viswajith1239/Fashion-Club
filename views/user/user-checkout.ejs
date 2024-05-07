@@ -691,8 +691,7 @@
                                 <div class="form-group">
                                   <button class="btn  btn-md" name="login" style="background-color: lightskyblue;" type="submit">Apply
                                     Coupon</button>
-                                    <!-- <button class="coupon-btn cancel" type="button" id="remCoupon" onclick="removeCoup()">Cancel</button> -->
-                                </div>
+                                    <button class="btn btn-md cancel"type="button"  id="remCoupon" onclick="removeCoupon('<%=cartItems.coupon %>','<%=userData._id %>')">Remove Coupon</button>
                               </form>
                             </div>
                           </div>
@@ -783,14 +782,17 @@
                                                     <th>Coupon Discount</th>
                                                     <td colspan="2" class="text-dark">
                                                         <input id="carti" type="hidden" value="<%=cartItems %>">
+                                                        <span id="couponAmountText">
                                                         <% if (cartItems.couponAmount>0) { %>
-                                                          <span id="coupamount"> <%=cartItems.couponAmount %></span>
+                                                          <span> <%=cartItems.couponAmount %></span>
                                                             <script>
                                                                 console.log("cartitemi",document.getElementById('carti').value)
+                                                              
                                                             </script>
                                                           <% } else { %>
                                                             <span>No Coupons Applied</span>
                                                             <% } %>
+                                                        </span>
                                                       </td>
 
                                                 </tr>
@@ -1111,7 +1113,7 @@
 
 
     </script>
-    <script>
+    <!-- <script>
         function removeCoup() {
                 const Toast = Swal.mixin({
                     toast: true,
@@ -1134,6 +1136,24 @@
                     // window.location.href = "/checkout";
                 });
             }
+    </script> -->
+
+<script>
+     function removeCoupon(Coupon,userId) {
+      let coupon = Coupon;
+      console.log(coupon);  
+      $.ajax({
+        url: `/removeCoupon?coupon=${coupon}&userId=${userId}`,
+        type: 'POST',
+        success: function(response) {
+            console.log(response)
+            $('#couponAmountText').text('No Coupons Applied');
+        },
+        error: function(error) {
+          console.error('Error removing coupon:', error);
+        }
+      });
+    }
     </script>
 
 

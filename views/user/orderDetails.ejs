@@ -357,12 +357,12 @@
                               <td class="cart_total_label">Order Subtotal</td>
                               <td class="cart_total_amount"><span class="font-lg fw-900 text-dark" id="totalAmount"
                                   style="color: 2B1754;">
-                                  ₹ <%= productDetails[0].totalAmount%>
+                                  ₹ <%= productDetails[0].products.productPrice%>
                                 </span>
                               </td>
                             </tr>
                             <tr>
-                              <td class="cart_total_label">Coupon</td>
+                              <td class="cart_total_label">Coupon Applied</td>
                               <% if (productDetails[0].couponAmount>0) { %>
                                 <td class="cart_total_amount"> <i class="ti-gift mr-5"></i>
                                   <span id="couponAmount">
@@ -371,7 +371,7 @@
                                 </td>
                                 <% } else { %>
                                   <td class="cart_total_amount"> <i class="ti-gift mr-5"></i>
-                                    <span id="noCoupon">No Coupon</span>
+                                    <span id="noCoupon">No</span>
                                   </td>
                                   <% } %>
                             </tr>

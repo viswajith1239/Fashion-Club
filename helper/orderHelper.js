@@ -7,7 +7,7 @@ const walletHelper=require("../helper/walletHelper")
 
 const ObjectId = require("mongoose").Types.ObjectId;
 
-const placeOrder = (body, userId) => {
+const placeOrder = (body, userId,coupon) => {
     return new Promise(async (resolve, reject) => {
       try {
         const cart = await cartModel.findOne({ user: userId });
@@ -50,7 +50,7 @@ const placeOrder = (body, userId) => {
 
   
         if (cart && address) {
-          const result = orderModel.create({
+          const result =await orderModel.create({
             user: userId,
             products: products,
             address: {
@@ -67,7 +67,20 @@ const placeOrder = (body, userId) => {
             paymentMethod: body.paymentOption,
             totalAmount: cart.totalAmount,
           });
-  
+            console.log("coupon",coupon);
+           if (coupon) {
+                coupon.usedBy.push(userId);
+                const discountAmount = parseInt(result.totalAmount) * parseInt(coupon.discount) / 100;
+                console.log("tis is",discountAmount);
+                result.totalAmount = parseInt(result.totalAmount) - discountAmount;
+// -----------------------------------------------------------------------------------------------
+                result.couponAmount = coupon.discount;
+                await result.save()
+                await coupon.save();
+
+       
+            }
+            console.log("hello",result);
           resolve({ result: result, status: true });
         }
       } catch (error) {
@@ -280,12 +293,12 @@ const placeOrder = (body, userId) => {
         );
         const response = await orderModel.findOne({ _id: orderId });
         console.log("order id is",orderId)
-        console.log("response issssssssssss",response.paymentMethod)
+        console.log("response issssssssssss",response)
         if (response.paymentMethod == 'RazorPay') {
           console.log("razorpay");
           const walletUpdation = await walletHelper.walletAmountAdding(
             response.user,
-            price
+            response.totalAmount
           );
         }
   
@@ -345,7 +358,7 @@ const placeOrder = (body, userId) => {
           console.log("price issssssssssssssss",price)
           const walletUpdation = await walletHelper.walletAmountAdding(
             response.user,
-            price
+            response.totalAmount
           );
         }
   

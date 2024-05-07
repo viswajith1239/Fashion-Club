@@ -64,6 +64,8 @@ router.post("/createorder",userMiddleware.islogin, orderController.createOrder);
 
 router.post('/paymentSuccess', userMiddleware.islogin,orderController.paymentSuccess);
 
+router.post('/removeCoupon', couponController.removeCoupon);
+
 
 router.put('/editAddress/:id',userMiddleware.islogin,userController.editAddress)
 
