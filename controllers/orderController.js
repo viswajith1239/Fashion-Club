@@ -133,17 +133,17 @@ const checkoutpage = async (req, res) => {
   const placeOrder = async (req, res) => {
     const body = req.body;
     const status = req.body.status;
-   
+    console.log('body',body);
     const userId = req.session.user;
-    console.log("this is body", body.couponCode);
     
+    console.log("place ordeer failed");
     let coupon = await couponModel.findOne({ code: body.couponCode });
     let orderdata= await cartModel.find({user:userId})
     console.log("========>",orderdata)
   
     
     console.log("this is coupon", coupon);
-    
+   
     const result = await orderHelper.placeOrder(body, userId,coupon);
     console.log("thisis ",result)
     
@@ -161,6 +161,7 @@ const checkoutpage = async (req, res) => {
             res.json({ url: "/ordersuccesspage", status: true });
         }
     } else {
+        console.log('payment failed');
         res.json({ message: result.message, status: false });
     }
 };
@@ -179,6 +180,7 @@ const checkoutpage = async (req, res) => {
     try {
       const orderId = req.params.id;
       const userData = await user.findById({_id:req.session.user})
+      console.log("this is userdata",userData);
       const orderDetails = await orderHelper.getSingleOrderDetails(orderId);
       const productDetails = await orderHelper.getOrderDetailsOfEachProduct(
         orderId
@@ -409,6 +411,34 @@ const checkoutpage = async (req, res) => {
         console.log(error);
       });
   };
+
+
+
+  const retryPayment = async (req, res) => {
+    try {
+      console.log("inside retrypayment");
+      const orderId = req.query.orderId;
+      console.log('orderId',orderId);
+      const orderDetails = await orderModel.findOne({ orderId: orderId });
+      console.log(orderDetails);
+  
+      orderDetails.products.forEach((item) => {
+        item.status = "pending";
+      });
+      // Save the updated orderDetails
+      await orderDetails.save();
+      // Calculate total amount
+      const totalAmount = orderDetails.totalAmount;
+      console.log('orderdetails',orderDetails);
+  
+      // Send response to the client with order ID and total amount
+      res.status(200).json({ orderId: orderDetails._id, totalAmount });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+  
   module.exports={
     checkoutpage,
     ordersuccsspageload,
@@ -424,5 +454,6 @@ const checkoutpage = async (req, res) => {
     orderFailedPageLoad,
     SalesReportDateSortload,
     paymentSuccess,
-    returnSingleOrder
+    returnSingleOrder,
+    retryPayment  
   }

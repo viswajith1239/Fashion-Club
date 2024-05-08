@@ -17,8 +17,10 @@ const adminCoupon=async(req,res)=>{
 
         for (let i = 0; i < allCoupons.length; i++) {
           allCoupons[i].discount = (allCoupons[i].discount);
+          
           allCoupons[i].expiryDate =dateFormatter(allCoupons[i].expiryDate);
         }
+       
         allCoupons = allCoupons.slice(startIndex,endIndex);
         const message = req.flash("message");
     
@@ -113,6 +115,7 @@ const adminCoupon=async(req,res)=>{
   };
 
   function dateFormatter(date) {
+    console.log("Received date:", date); //
     return date.toISOString().slice(0, 10);
   }
 

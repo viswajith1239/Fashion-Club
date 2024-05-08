@@ -1367,8 +1367,8 @@
                         $.ajax({
                             url: '/placeOrder',
                             type: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify({
+                            // contentType: 'application/json',
+                            data: ({
                                 addressId: address,
                                 paymentOption: paymentMethod,
                                 status: "payment pending"
@@ -1376,7 +1376,7 @@
                             success: function (data) {
                                 console.log(data);
                                 if (data.success) {
-                                    window.location.href = '/orderFailedPage';
+                                    window.location.href = '/orderFailure-page';
                                 } else {
                                     console.error('Error: Order creation failed');
                                 }

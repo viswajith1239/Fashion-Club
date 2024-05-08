@@ -77,6 +77,8 @@ router.put('/updatePassword',userMiddleware.islogin,userController.updatePasswor
 
 router.put("/removeFromWishlist", userMiddleware.islogin,wishlistController.removeFromWishlist);
 
+router.post("/createRazorpayOrder", orderController.retryPayment);
+
 
 
 

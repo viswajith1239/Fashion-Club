@@ -307,8 +307,10 @@
                                     <%= coupons[i].discount %>
                                   </td>
                                   <td width="15%">
-                                    <%= coupons[i].expiryDate %>
+                                  
+                                    <%= coupons[i].expiryDate.toDateString() %>
                                   </td>
+                                  
                                   <td width="10%"><a onclick="editCoupon('<%= coupons[i]._id %>')"
                                       class="btn btn-sm btn-success rounded font-sm mt-15">Edit</a></td>
                                   <td width="10%"><a onclick="deleteCoupon('<%= coupons[i]._id %>')"

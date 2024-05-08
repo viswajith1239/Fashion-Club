@@ -80,7 +80,7 @@ const findAllCoupons = () => {
       coupon.couponName = editedCouponData.couponName;
       coupon.discount = editedCouponData.coupondiscount;
       coupon.expiryDate = editedCouponData.couponExpiry;
-  
+ 
       await coupon.save();
       resolve(coupon);
     });
