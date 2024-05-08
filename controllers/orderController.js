@@ -130,41 +130,82 @@ const checkoutpage = async (req, res) => {
   //   }
   // };
 
-  const placeOrder = async (req, res) => {
-    const body = req.body;
-    const status = req.body.status;
-    console.log('body',body);
-    const userId = req.session.user;
+//   const placeOrder = async (req, res) => {
+//     const body = req.body;
+//     const status = req.body.status;
+   
+//     const userId = req.session.user;
     
-    console.log("place ordeer failed");
-    let coupon = await couponModel.findOne({ code: body.couponCode });
-    let orderdata= await cartModel.find({user:userId})
-    console.log("========>",orderdata)
+//     console.log("place ordeer failed");
+//     let coupon = await couponModel.findOne({ code: body.couponCode });
+//     let orderdata= await cartModel.find({user:userId})
+    
   
     
-    console.log("this is coupon", coupon);
+//     console.log("this is coupon", coupon);
    
-    const result = await orderHelper.placeOrder(body, userId,coupon);
-    console.log("thisis ",result)
+//     const result = await orderHelper.placeOrder(body, userId,coupon);
     
-    if (result.status) {
-        if (coupon) {
-            coupon.usedBy.push(userId);
+    
+//     if (result.status) {
+//         if (coupon) {
+//             coupon.usedBy.push(userId);
             
-            await coupon.save();
+//             await coupon.save();
           
-        }
+//         }
         
-        const cart = await cartHelper.clearAllCartItems(userId);
+//         const cart = await cartHelper.clearAllCartItems(userId);
         
-        if (cart) {
-            res.json({ url: "/ordersuccesspage", status: true });
-        }
-    } else {
-        console.log('payment failed');
-        res.json({ message: result.message, status: false });
-    }
+//         if (cart) {
+          
+//             res.json({ url: "/ordersuccesspage", status: true });
+//         } 
+//     } else {
+//         console.log('payment failed');
+//         res.json({ message: result.message, status: false });
+//     }
+// };
+
+const placeOrder = async (req, res) => {
+  const body = req.body;
+  const status = req.body.status;
+  const userId = req.session.user;
+  console.log("place order failed");
+  
+  let coupon = await couponModel.findOne({ code: body.couponCode });
+  let orderdata = await cartModel.find({ user: userId });
+  console.log("this is coupon", coupon);
+  
+  
+
+      const cart = await cartModel.findOne({user:userId})
+
+      if (cart) {
+          // Check if total amount is more than 1000 and payment option is COD
+          if (parseFloat(body.totalAmount) > 1000 && body.paymentOption === "COD") {
+              // If condition is met, send a JSON response indicating COD not available
+              return res.json({ message: "COD is not available for this price range", status: false });
+          } else {
+              const result = await orderHelper.placeOrder(body, userId, coupon);
+
+              if (result.status) {
+                if (coupon) {
+                    coupon.usedBy.push(userId);
+                    await coupon.save();
+                }
+              await cartHelper.clearAllCartItems(userId);
+              // Otherwise, send a JSON response indicating successful order placement
+              return res.json({ url: "/ordersuccesspage", status: true });
+          }
+      }
+  } else {
+      console.log('payment failed');
+      // Send a JSON response indicating payment failure
+      return res.json({ message: result.message, status: false });
+  }
 };
+
 
   
 

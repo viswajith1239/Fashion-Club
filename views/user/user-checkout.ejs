@@ -1113,30 +1113,7 @@
 
 
     </script>
-    <!-- <script>
-        function removeCoup() {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "center",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    },
-                });
-                Toast.fire({
-                    icon: "success",
-                    title: "Coupon Removed",
-                }).then((result) => {
-                
-               let  subtotal = document.getElementById('subtotal').innerHTML
-               document.getElementById("coupamount").innerHTML=subtotal
-
-                    // window.location.href = "/checkout";
-                });
-            }
-    </script> -->
+    
 
 <script>
      function removeCoupon(Coupon,userId) {
@@ -1275,13 +1252,15 @@
             let payment = $("input[name='payment_option']:checked").val();
             let code = document.getElementById("couponCodeTable").textContent.trim()
             console.log("thisis code",code);
+            const totalAmount = document.getElementById("totalAmount").textContent;
 
             const data = {
               addressId: address,
               paymentOption: payment,
-              couponCode: code
+              couponCode: code,
+              totalAmount:totalAmount
             }
-            const totalAmount = document.getElementById("totalAmount").textContent;
+           
             console.log("haiii",data,totalAmount);
             console.log(payment);
             if (payment === "COD"||payment == "Wallet"){
@@ -1300,9 +1279,7 @@
                   gravity: "top",
                   position: "center",
                   stopOnFocus: true,
-                  style: {
-                    background: "linear-gradient(to right, aqua, blue)",
-                  },
+                  backgroundColor: "red",
                 }).showToast();
               }
             }
