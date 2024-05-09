@@ -281,6 +281,7 @@ const placeOrder = (body, userId,coupon) => {
         const singleProductId = result[0].products.product;
         const singleProductSize = result[0].products.size;
         const singleProductQuantity = result[0].products.quantity;
+        
   
         const stockIncrease = await productModel.updateOne(
           { _id: singleProductId, "productQuantity.size": singleProductSize },
@@ -292,13 +293,19 @@ const placeOrder = (body, userId,coupon) => {
           }
         );
         const response = await orderModel.findOne({ _id: orderId });
+        let amountToReturn;
+        response.products.forEach(product=>{
+          if(product._id==singleOrderId){
+            amountToReturn = product.productPrice
+          }
+        })
         console.log("order id is",orderId)
         console.log("response issssssssssss",response)
         if (response.paymentMethod == 'RazorPay') {
           console.log("razorpay");
           const walletUpdation = await walletHelper.walletAmountAdding(
             response.user,
-            response.totalAmount
+            amountToReturn
           );
         }
   

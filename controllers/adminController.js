@@ -173,7 +173,7 @@ const modalLoader=async(req,res)=>{
 const LoadAddproduct= async (req,res)=>{
   try{
       const categories = await category.find()
-      console.log("categories");
+     
       console.log(categories);
       
       res.render('admin/adminadd-products',{categories})

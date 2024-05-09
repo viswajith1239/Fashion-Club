@@ -77,6 +77,7 @@ const checkoutpage = async (req, res) => {
           totalandSubTotal,
           userData,
           coupons,
+          userId,
         });
       }
     } else {
@@ -95,6 +96,7 @@ const checkoutpage = async (req, res) => {
           totalandSubTotal,
           userData,
           coupons,
+          userId,
         });
       }
     }
@@ -212,13 +214,17 @@ const placeOrder = async (req, res) => {
   
 
   const ordersuccsspageload=(req,res)=>{
-    res.render("user/ordersuccesspage")
+    const userId = req.session.user;
+    res.render("user/ordersuccesspage",{
+      userId,
+    })
   }
 
 
   
   const orderDetails = async (req, res) => {
     try {
+      const userId = req.session.user;
       const orderId = req.params.id;
       const userData = await user.findById({_id:req.session.user})
       console.log("this is userdata",userData);
@@ -234,7 +240,8 @@ const placeOrder = async (req, res) => {
         res.render("user/orderDetails", {
           userData,
           orderDetails,
-          productDetails
+          productDetails,
+          userId,
         });
       }
     } catch (error) {
@@ -372,7 +379,10 @@ const placeOrder = async (req, res) => {
     }
   };
   const orderFailedPageLoad = (req, res) => {
-    res.render("user/orderFailure-page");
+    const userId = req.session.user;
+    res.render("user/orderFailure-page",{
+      userId,
+    });
   };
 
   const paymentSuccess = (req, res) => {

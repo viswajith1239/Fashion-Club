@@ -57,17 +57,20 @@ const userCart=async(req,res)=>{
             totalAmount: totalandSubTotal,
             totalAmountOfEachProduct,
             maximumDiscounts,
+            userData,
             status:true
             
           });
           }else{
             res.render("user/user-cart",{
+              userData,
             status:false
             })
           }
         }
         else{
           res.render("user/user-cart",{
+            userData,
           status:false
           })
         }

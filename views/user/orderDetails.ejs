@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="/public/user-assets/css/maind134.css?v=3.4">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css">
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-***" crossorigin="anonymous" />
 </head>
 
 <body>
@@ -28,8 +29,7 @@
                 <div class="row align-items-center">
                     <div class="col-xl-3 col-lg-4">
                         <div class="header-info">
-                            <ul>
-                            </ul>
+                         
                         </div>
                     </div>
                     <div class="col-xl-6 col-lg-4">
@@ -43,8 +43,39 @@
                     </div>
                     <div class="col-xl-3 col-lg-4">
                         <div class="header-info header-info-right">
-                            <ul>
-                            </ul>
+                          <ul>
+                            <li>
+                                <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i
+                                        class="fi-rs-angle-small-down"></i></a>
+                                <ul class="language-dropdown">
+                                    <li><a href="#"><img src="/public/user-assets/imgs/theme/flag-fr.png"
+                                                alt="">Français</a></li>
+                                    <li><a href="#"><img src="/public/user-assets/imgs/theme/flag-dt.png"
+                                                alt="">Deutsch</a></li>
+                                    <li><a href="#"><img src="/public/user-assets/imgs/theme/flag-ru.png"
+                                                alt="">Pусский</a></li>
+                                </ul>
+                            </li>
+                            <% if (locals.userId) { %>
+                                <li class="dropdown nav-item">
+                                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                        id="dropdownAccount" aria-expanded="false">
+                                        <i class="fas fa-user"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                       
+                                        <a class="dropdown-item" href="/user-account"><i
+                                                class="material-icons md-settings"></i>Account </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="/logout"><i
+                                                class="material-icons md-exit_to_app"></i>Logout</a>
+                                    </div>
+                                </li>
+                                <% } else { %>
+                                    <li><i class="fi-rs-user"></i><a href="/login">Log In</a></li>
+                                    <% } %>
+                            <!-- <li><i class="fi-rs-user"></i><a href="page-login-register.html">Log In / Sign Up</a></li> -->
+                        </ul>
                         </div>
                     </div>
                 </div>
@@ -53,9 +84,7 @@
         <div class="header-bottom sticky-bar sticky-white-bg">
             <div class="container">
                 <div class="header-wrap header-space-between position-relative">
-                    <div class="logo" style="width: 210px;height: 91px">
-                        <a href="/SnatchIt-Home.ejs"><img src="/public/user-assets/images/SnatchIt_log" alt="logo"></a>
-                    </div>
+                    
                     <div class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
                         <nav>
                             <ul>
@@ -152,7 +181,7 @@
         <div class="page-header breadcrumb-wrap">
           <div class="container">
             <div class="breadcrumb">
-              <a href="/SnatchIt-Home" rel="nofollow">Home</a>
+              <a href="/home-page" rel="nofollow">Home</a>
               <span></span> Shop
               <span></span> Order Details
             </div>
@@ -359,7 +388,13 @@
                               <td class="cart_total_label">Order Subtotal</td>
                               <td class="cart_total_amount"><span class="font-lg fw-900 text-dark" id="totalAmount"
                                   style="color: 2B1754;">
-                                  ₹ <%= productDetails[0].products.productPrice%>
+                                  <% let subtotal = 0; %>
+                                  <% for (let i = 0; i < productDetails.length; i++) { %>
+                                    <% subtotal += productDetails[i].products.productPrice; %>
+                                    <!-- Other HTML to display individual product details -->
+                                  <% } %>
+                                  <!-- Display the subtotal -->
+                                  ₹ <%= subtotal %>
                                 </span>
                               </td>
                             </tr>
@@ -569,7 +604,7 @@
           text: 'You will not be able to undo this',
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonText: 'Yes, delete it!',
+          confirmButtonText: 'Yes, cancel it',
           cancelButtonText: 'Cancel',
           reverseButtons: true,
         }).then((response) => {
@@ -634,7 +669,7 @@
       let productDetails = JSON.parse(document.getElementById('productDetails').value);
 
 
-      console.log(productDetails);
+      console.log('product',productDetails);
 
       e.preventDefault();
       ;
@@ -648,20 +683,27 @@
           let filteredProducts = productDetails.filter((product) => {
             return product.products.status !== "cancelled";
           });
+          console.log('filter',filteredProducts);
           let products = filteredProducts.map((product) => ({
             quantity: product.products.quantity,
             description: product.orderedProduct.name,
             tax: 0,
-            price: product.totalAmount
+            price: product.products.productPrice
           }));
-          console.log(products)
-
+          
+          // let orderTotal=0;
+          // products.forEach(element => {
+          //   orderTotal+=element.price;
+          // });
+          let totalAmount = products.reduce((total, product) => total + product.price, 0);
           if (filteredProducts[0].couponAmount > 0) {
+            let couponPercentage = filteredProducts[0].couponAmount;
+            let couponDeduction = (totalAmount * couponPercentage) / 100
             products.push({
               quantity: 1,
               description: "Coupon Deduction",
               tax: 0,
-              price: -productDetails[0].couponAmount,
+              price: -couponDeduction,
             })
           }
 
@@ -736,7 +778,7 @@
           "key": "rzp_test_8NIpILQrGaZLRj",
           "amount": amount, // Example amount, replace with actual amount
           "currency": "INR",
-          "name": "Harmony Hue",
+          "name": "Fashion Club",
           "description": 'Test Transaction',
           "image": "http://localhost:3000/public/image/fashion club logo.jpg",
           "order_id": orderId, // Use the order_id received from the server

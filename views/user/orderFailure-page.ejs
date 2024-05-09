@@ -23,6 +23,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/public/image/Screenshot 2024-02-24 095808.jpg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/public/user-assets/css/maind134.css?v=3.4">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-***" crossorigin="anonymous" />
 </head>
 
 <body>
@@ -66,6 +67,24 @@
                                                     alt="">Pусский</a></li>
                                     </ul>
                                 </li>
+                                <% if (locals.userId) { %>
+                                    <li class="dropdown nav-item">
+                                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                            id="dropdownAccount" aria-expanded="false">
+                                            <i class="fas fa-user"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                           
+                                            <a class="dropdown-item" href="/user-account"><i
+                                                    class="material-icons md-settings"></i>Account </a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-danger" href="/logout"><i
+                                                    class="material-icons md-exit_to_app"></i>Logout</a>
+                                        </div>
+                                    </li>
+                                    <% } else { %>
+                                        <li><i class="fi-rs-user"></i><a href="/login">Log In</a></li>
+                                        <% } %>
                                 <!-- <li><i class="fi-rs-user"></i><a href="page-login-register.html">Log In / Sign Up</a></li> -->
                             </ul>
                         </div>

@@ -349,6 +349,9 @@ const loadhomepage = async(req,res)=>{
         console.log(error);
     }
   }
+
+  
+
    const addAddress= async(req,res)=>{
     try {
         const body=req.body
