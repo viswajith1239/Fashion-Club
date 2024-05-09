@@ -72,19 +72,35 @@ const findAllCoupons = () => {
     });
   };
 
-  const editTheCouponDetails = (editedCouponData) => {
-    return new Promise(async (resolve, reject) => {
-      let coupon = await couponModel.findById({
-        _id: editedCouponData.couponId,
-      });
-      coupon.couponName = editedCouponData.couponName;
-      coupon.discount = editedCouponData.coupondiscount;
-      coupon.expiryDate = editedCouponData.couponExpiry;
+  // const editTheCouponDetails = (editedCouponData) => {
+  //   return new Promise(async (resolve, reject) => {
+  //     let coupon = await couponModel.findById({
+  //       _id: editedCouponData.couponId,
+  //     });
+  //     coupon.couponName = editedCouponData.couponName;
+  //     coupon.discount = editedCouponData.coupondiscount;
+  //     coupon.expiryDate = editedCouponData.couponExpiry;
  
+  //     await coupon.save();
+  //     resolve(coupon);
+  //   });
+  // };
+
+  const editTheCouponDetails = async (editedCouponData) => {
+    try {
+      console.log("Editing coupon with ID:", editedCouponData.couponId1);
+      let coupon = await couponModel.findById(editedCouponData.couponId1);
+      coupon.couponName = editedCouponData.couponName1;
+      coupon.discount = editedCouponData.couponDiscount1; // Corrected property name
+      coupon.expiryDate = editedCouponData.couponExpiry1;
+  
       await coupon.save();
-      resolve(coupon);
-    });
+      return coupon;
+    } catch (error) {
+      throw error;
+    }
   };
+  
   
   const  applyCoupon = (userId, couponCode) => {
     return new Promise(async (resolve, reject) => {
