@@ -55,6 +55,7 @@ router.post("/productEditOffer", adminMiddleware.islogoutAdmin, offerController.
 router.post("/categoryAddOffer", adminMiddleware.islogoutAdmin, offerController.addCategoryOffer);
 router.post("/categoryEditOffer", adminMiddleware.islogoutAdmin, offerController.categoryEditOffer);
 router.post("/admin-salesReport",adminMiddleware.islogoutAdmin, orderController.SalesReportDateSortload);
+router.post("/showChart",adminMiddleware.islogoutAdmin,adminController.showChart)
 
 router.delete("/deleteCoupon/:id", adminMiddleware.islogoutAdmin, couponController.deleteCoupon)
 

@@ -6,6 +6,7 @@ const productHelper=require("../helper/productHelper")
 const product=require('../models/productModel')
 const admin=require("../models/adminModel")
 const orderHelper=require("../helper/orderHelper")
+const orderModel=require("../models/orderModel")
 const fs =require("fs")
 
 
@@ -182,13 +183,97 @@ const LoadAddproduct= async (req,res)=>{
   }
 }
 
-const Loaddashboard=async(req,res)=>{
+// const Loaddashboard=async(req,res)=>{
+//   try {
+    
+//     res.render('admin/admin-dashboard')
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+const Loaddashboard = async (req, res, next) => {
   try {
-    res.render('admin/admin-dashboard')
+    // Fetch all orders
+    const salesDetails = await orderModel.find();
+    console.log("sales",salesDetails);
+
+    // Fetch all products and categories
+    const products = await product.find();
+    const categories = await category.find();
+
+    // Aggregate for finding the top selling products
+    const topSellingProducts = await orderModel.aggregate([
+      { $unwind: "$products" }, // Split orders into individual products
+      {
+        $group: {
+          _id: "$products.product",
+          totalQuantity: { $sum: "$products.quantity" },
+        },
+      }, // Group by productId and sum quantities
+      { $sort: { totalQuantity: -1 } }, // Sort by total quantity descending
+      { $limit: 10 }, // Limit to top 10 products
+    ]);
+
+    // Extract product IDs of top selling products
+    const productIds = topSellingProducts.map((product) => product._id);
+
+    
+    // Fetch details of top selling products
+    const productsData = await product.find(
+      { _id: { $in: productIds } },
+      { name: 1, image: 1 }
+    );
+
+    // Aggregate to find the top selling categories
+    const topSellingCategories = await orderModel.aggregate([
+      { $unwind: "$products" }, // Split orders into individual products
+      {
+        $lookup: {
+          from: "products",
+          localField: "products.product",
+          foreignField: "_id",
+          as: "product",
+        },
+      }, // Lookup products collection to get product details
+      { $unwind: "$product" }, // Unwind the product array
+      {
+        $lookup: {
+          from: "categories",
+          localField: "product.category",
+          foreignField: "_id",
+          as: "category",
+        },
+      }, // Lookup categories collection to get category details
+      { $unwind: "$category" }, // Unwind the category array
+      {
+        $group: {
+          _id: "$category._id",
+          totalQuantity: { $sum: "$products.quantity" },
+        },
+      }, // Group by categoryId and sum quantities
+      { $sort: { totalQuantity: -1 } }, // Sort by total quantity descending
+      { $limit: 10 }, // Limit to top 10 categories
+    ]);
+
+    // Fetch details of the top selling categories
+    const topSellingCategoriesData = await category.find({
+      _id: { $in: topSellingCategories.map((cat) => cat._id) },
+    });
+
+    res.render("admin/admin-dashboard", {
+      salesDetails: salesDetails,
+      products: products,
+      categories: categories, // Pass categories to the rendering context
+      productsData: productsData,
+      topSellingCategories: topSellingCategoriesData,
+      topSellingProducts: topSellingProducts,
+    });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
-}
+};
+
 
 const addProduct=(req,res)=>{
   const body=req.body
@@ -257,16 +342,20 @@ const checkAdmin = async (req, res) => {
   try {
       const loggedAdmin = await admin.findOne({
           email: logemail,
-
+        
       }).catch(error=>console.error("mongoose.findOne error:",error))
       console.log(loggedAdmin);
+      if (!loggedAdmin) {
+        // If no admin found with the provided email
+        res.render('admin/admin-login',{errmessage:"wrong Email"})
+      }
       if(logpassword===loggedAdmin.password){
         req.session.admin=loggedAdmin._id
         res.redirect('/admin-dashboard')
         console.log(loggedAdmin);
         console.log(req.session.admin);
       }else{
-        res.redirect("/admin-login")
+        res.render("admin/admin-login",{errmessage:"Wrong Password"})
       }
       
     } catch (err) {
@@ -333,6 +422,79 @@ const deleteImage = async (req,res)=>{
   }
 }
 
+const showChart = async (req, res) => {
+  console.log("varunille??/")
+  try {
+    console.log("uuu")
+    if (req.query.msg) {
+      console.log("msg",req.query.msg)
+      console.log("yes")
+      // Aggregate monthly sales data
+      const monthlySalesData = await orderModel.aggregate([
+        {
+          $match: { "products.status": "delivered" }, // Consider only delivered orders
+        },
+        {
+          $group: {
+            _id: { $month: "$orderedOn" }, // Group by month
+            totalAmount: { $sum: "$totalAmount" }, // Calculate total sales amount for each month
+          },
+        },
+        {
+          $sort: { _id: 1 }, // Sort by month
+        },
+      ]);
+      console.log("mont")
+      console.log("------mon",monthlySalesData);
+
+      // Aggregate daily sales data
+      const dailySalesData = await orderModel.aggregate([
+        {
+          $match: { "products.status": "delivered" }, // Consider only delivered orders
+        },
+        {
+          $group: {
+            _id: { $dayOfMonth: "$orderedOn" }, // Group by day of month
+            totalAmount: { $sum: "$totalAmount" }, // Calculate total sales amount for each day
+          },
+        },
+        {
+          $sort: { _id: 1 }, // Sort by day of month
+        },
+      ]);
+      console.log("daily",dailySalesData);
+
+      const orderStatuses = await orderModel.aggregate([
+        {
+          $unwind: "$products", // Unwind the products array
+        },
+        {
+          $group: {
+            _id: "$products.status", // Group by order status
+            count: { $sum: 1 }, // Count occurrences of each status
+          },
+        },
+      ]);
+      console.log("order",orderStatuses);
+
+      // Map order statuses to object format
+      const eachOrderStatusCount = {};
+      orderStatuses.forEach((status) => {
+        eachOrderStatusCount[status._id] = status.count;
+      });
+      // console.log(eachOrderStatusCount);
+
+      res
+        .status(200)
+        .json({ monthlySalesData, dailySalesData, eachOrderStatusCount });
+    }
+    console.log("check")
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 
 
@@ -357,8 +519,8 @@ module.exports={
     checkAdmin,
     logoutAdmin,
     isAuthenticated,
-    deleteImage
-    
+    deleteImage,
+    showChart,
     
 
 }
