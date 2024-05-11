@@ -184,9 +184,9 @@ const placeOrder = async (req, res) => {
       const cart = await cartModel.findOne({user:userId})
 
       if (cart) {
-          // Check if total amount is more than 1000 and payment option is COD
+         
           if (parseFloat(body.totalAmount) > 1000 && body.paymentOption === "COD") {
-              // If condition is met, send a JSON response indicating COD not available
+             
               return res.json({ message: "COD is not available for this price range", status: false });
           } else {
               const result = await orderHelper.placeOrder(body, userId, coupon);
@@ -197,13 +197,13 @@ const placeOrder = async (req, res) => {
                     await coupon.save();
                 }
               await cartHelper.clearAllCartItems(userId);
-              // Otherwise, send a JSON response indicating successful order placement
+             
               return res.json({ url: "/ordersuccesspage", status: true });
           }
       }
   } else {
       console.log('payment failed');
-      // Send a JSON response indicating payment failure
+     
       return res.json({ message: result.message, status: false });
   }
 };
@@ -476,13 +476,13 @@ const placeOrder = async (req, res) => {
       orderDetails.products.forEach((item) => {
         item.status = "pending";
       });
-      // Save the updated orderDetails
+     
       await orderDetails.save();
-      // Calculate total amount
+      
       const totalAmount = orderDetails.totalAmount;
       console.log('orderdetails',orderDetails);
   
-      // Send response to the client with order ID and total amount
+    
       res.status(200).json({ orderId: orderDetails._id, totalAmount });
     } catch (error) {
       console.log(error);

@@ -73,7 +73,7 @@ const placeOrder = (body, userId,coupon) => {
                 const discountAmount = parseInt(result.totalAmount) * parseInt(coupon.discount) / 100;
                 console.log("tis is",discountAmount);
                 result.totalAmount = parseInt(result.totalAmount) - discountAmount;
-// -----------------------------------------------------------------------------------------------
+
                 result.couponAmount = coupon.discount;
                 await result.save()
                 await coupon.save();
@@ -394,7 +394,7 @@ const placeOrder = (body, userId,coupon) => {
       return result;
     } catch (error) {
       console.log("Error:", error);
-      throw error; // Re-throwing the error to be caught elsewhere if needed.
+      throw error;
     }
   };
 
@@ -411,7 +411,7 @@ const placeOrder = (body, userId,coupon) => {
     return nextDay;
   }
   
-  // Get the end date plus one day to include the entire day
+  
   const endDateSortPlusOneDay = getNextDay(endDateSort);
 
       const result = await orderModel.aggregate([
@@ -430,13 +430,13 @@ const placeOrder = (body, userId,coupon) => {
             as: "productDetails",
           },
         },
-        { $sort: { orderedOn: 1 } }, // 1 for ascending order, -1 for descending
+        { $sort: { orderedOn: 1 } }, 
       ]);
       console.log(result);
       return result;
     } catch (error) {
       console.log("Error:", error);
-      throw error; // Re-throwing the error to be caught elsewhere if needed.
+      throw error; 
     }
   };
   module.exports={

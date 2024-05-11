@@ -28,7 +28,7 @@ const addToCart = async (req, res) => {
       searchResult = searchResult.slice(0, 5);
       res.json({ searchResult });
     } catch (error) {
-      // res.status(500).render("error", { error, layout: false });
+     
       console.log(error);
     }
   };

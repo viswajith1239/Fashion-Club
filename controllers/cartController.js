@@ -97,7 +97,7 @@ const updateCartQuantity = async (req, res) => {
     
     const cartItems = await cartHelper.getAllCartItems(userId);
     
-    // console.log(offerPrice);
+    
   
     if (update.status) {
       const cart = await cartModel.aggregate([

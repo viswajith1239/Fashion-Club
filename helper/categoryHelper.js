@@ -1,20 +1,5 @@
 const categoryModel=require("../models/categoryModel")
-// const addcat = async (productName, productDescription) => {
-//     try {
-//         const checkingName = await categoryModel.find({ name: { $regex: new RegExp("^" + productName + "$", "i") } });
-//         console.log("This is checkingName:", checkingName);
-        
-//         if (checkingName && checkingName.length > 0) {
-//             return { status: false, message: "Category Already Exists" };
-//         } else {
-            
-//             return { status: true };
-//         }
-//     } catch (error) {
-//         console.error("Error while adding category:", error);
-//         throw error;
-//     }
-// };
+
 
 const addcat = (productName, productDescription) => {
     try {

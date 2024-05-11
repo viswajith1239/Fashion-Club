@@ -60,7 +60,7 @@ const adminCoupon=async(req,res)=>{
 
   const removeCoupon = async (req, res) => {
     try {
-      // Find the active coupon and set it to expired
+     
       const appliedCoupon = req.query.coupon;
       console.log('Appplied coupon',appliedCoupon);
       const userId = req.query.userId
@@ -73,11 +73,11 @@ const adminCoupon=async(req,res)=>{
         await cart.save();
         res.json({success:true})
       } else {  
-        res.status(404).send('No active coupon found.'); // Send error status if no active coupon is found
+        res.status(404).send('No active coupon found.'); 
       }
     } catch (error) {
       console.error('Error removing coupon:', error);
-      res.status(500).send('Internal Server Error'); // Send error status if an error occurs
+      res.status(500).send('Internal Server Error');
     }
   };
 
@@ -115,7 +115,7 @@ const adminCoupon=async(req,res)=>{
   };
 
   function dateFormatter(date) {
-    console.log("Received date:", date); //
+    console.log("Received date:", date); 
     return date.toISOString().slice(0, 10);
   }
 

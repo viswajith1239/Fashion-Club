@@ -63,7 +63,7 @@ const checkUser = async (req, res) => {
             bcrypt.compare(logpassword, loggeduser.password).then((response)=>{
                 console.log("Entered in to checkUser");
                 req.session.user = loggeduser._id
-    //             // console.log(req.session.user)
+    //           
                 res.redirect("/home-page")
                 console.log(loggeduser);
             })
@@ -158,7 +158,7 @@ const insertUserWithVerify = async function (req, res) {
                 return res.redirect("/register")
             } else {
                 const message = respons.message
-                // req.flash("message",message)
+               
                 return res.redirect('/login')
             }
         } else {
@@ -407,7 +407,7 @@ const loadhomepage = async(req,res)=>{
       const userId = req.params.userId;
       const addressId = req.params.addressId;
   
-      // Assuming you have a User model
+     
       const userData = await user.findById(userId);
       console.log(userId)
       if (userData) {

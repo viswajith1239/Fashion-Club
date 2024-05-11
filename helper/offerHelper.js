@@ -176,7 +176,7 @@ const getAllOffersOfProducts = () => {
       try {
         const currentDate = new Date();
         const offer = await getActiveOffer(currentDate);
-  console.log("proooo",products);
+  
         for (let i = 0; i < products.length; i++) {
           const productOffer = offer.find(
             (item) => item.productOffer?.product?.toString() == products[i]._id
@@ -267,15 +267,14 @@ const getAllOffersOfProducts = () => {
 
 
   function formatDate(dateString) {
-    // Create a Date object from the string
+   
     const date = new Date(dateString);
   
-    // Get the year, month, and day components
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Add leading zero if needed
-    const day = String(date.getDate()).padStart(2, "0"); // Add leading zero if needed
   
-    // Format the date in YYYY/MM/DD format
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); 
+    const day = String(date.getDate()).padStart(2, "0"); 
+  
     return `${year}/${month}/${day}`;
   }
 

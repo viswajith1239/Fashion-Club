@@ -91,7 +91,7 @@ const findAllCoupons = () => {
       console.log("Editing coupon with ID:", editedCouponData.couponId1);
       let coupon = await couponModel.findById(editedCouponData.couponId1);
       coupon.couponName = editedCouponData.couponName1;
-      coupon.discount = editedCouponData.couponDiscount1; // Corrected property name
+      coupon.discount = editedCouponData.couponDiscount1;
       coupon.expiryDate = editedCouponData.couponExpiry1;
   
       await coupon.save();

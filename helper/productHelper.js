@@ -54,10 +54,10 @@ const addProduct = (data, files,req,res) => {
 console.log();
       // const newProduct = await productModel.create(productAdding);
 
-      // Array to store promises for cropping operations
+      
       const cropPromises = [];
 
-      // Define cropImage function
+      
       async function cropImage(hiddenfield) {
           return new Promise((resolve, reject) => {
               let parts = hiddenfield.split(" ");
@@ -115,10 +115,10 @@ console.log();
      
       
 
-      // Wait for all crop promises to resolve
+      
       await Promise.all(cropPromises);
 
-      // Save the updated product after all cropping operations
+      
       await newProduct.save();
 
       const message = "Product added successfully";
@@ -395,12 +395,12 @@ const checkDuplicateFunction = (body, productId) => {
           product.image,
           req.files
         );
-        // Check if there are existing filenames
+       
         if (product.image && product.image.length > 0) {
-          // Merge existing filenames with new filenames
+          
           product.image = [...product.image, ...newFilenames];
         } else {
-          // If no existing filenames, simply assign new filenames
+         
           product.image = newFilenames;
         }
       }
@@ -414,15 +414,15 @@ const checkDuplicateFunction = (body, productId) => {
   const editImages = async (oldImages, newImages) => {
     return new Promise((resolve, reject) => {
       if (newImages && newImages.length > 0) {
-        // if new files are uploaded
+       
         let filenames = [];
         for (let i = 0; i < newImages.length; i++) {
           filenames.push(newImages[i].filename);
         }
-        // resolve with new filenames without deleting old images
+        
         resolve(filenames);
       } else {
-        // if no new images, resolve with old images without deleting anything
+       
         resolve(oldImages);
       }
     });

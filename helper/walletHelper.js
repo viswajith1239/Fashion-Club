@@ -4,17 +4,17 @@ const walletAmountAdding = async (userId,subTotal) => {
   console.log("enterd in to amount adding");
 
   try {
-    // Fetching current user
+   
     const user = await userModel.findById(userId);
     console.log(user);
 
     console.log("hello",subTotal)
-    // Calculating new balance
+    
     const currentBalance = user.wallet.balance;
     const amount = parseInt(subTotal);
     const newBalance = currentBalance + amount;
 
-    // Creating new detail
+   
     const newDetail = {
       type: "refund",
       amount: amount,
@@ -22,14 +22,14 @@ const walletAmountAdding = async (userId,subTotal) => {
       transactionId: Math.floor(100000 + Math.random() * 900000),
     };
 
-    // Updating user with new balance and new detail
+    
     const response = await userModel.findOneAndUpdate(
       { _id: userId },
       {
         $set: { "wallet.balance": newBalance },
         $push: { "wallet.details": newDetail },
       },
-      { new: true } // to return the updated document
+      { new: true }
     );
 
     return response;

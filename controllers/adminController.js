@@ -94,10 +94,10 @@ const blockUser = async (req, res) => {
     //  await findUser.save()
     
   
-      res.json({ success: true }); // Send a JSON response
+      res.json({ success: true }); 
     } catch (error) {
       console.log(error.message);
-       // Handle errors
+     
     }
   };
 
@@ -193,40 +193,40 @@ const LoadAddproduct= async (req,res)=>{
 // }
 const Loaddashboard = async (req, res, next) => {
   try {
-    // Fetch all orders
+    
     const salesDetails = await orderModel.find();
     console.log("sales",salesDetails);
 
-    // Fetch all products and categories
+   
     const products = await product.find();
     const categories = await category.find();
 
-    // Aggregate for finding the top selling products
+   
     const topSellingProducts = await orderModel.aggregate([
-      { $unwind: "$products" }, // Split orders into individual products
+      { $unwind: "$products" },
       {
         $group: {
           _id: "$products.product",
           totalQuantity: { $sum: "$products.quantity" },
         },
-      }, // Group by productId and sum quantities
-      { $sort: { totalQuantity: -1 } }, // Sort by total quantity descending
-      { $limit: 10 }, // Limit to top 10 products
+      }, 
+      { $sort: { totalQuantity: -1 } }, 
+      { $limit: 10 }, 
     ]);
 
-    // Extract product IDs of top selling products
+    
     const productIds = topSellingProducts.map((product) => product._id);
 
     
-    // Fetch details of top selling products
+   
     const productsData = await product.find(
       { _id: { $in: productIds } },
       { name: 1, image: 1 }
     );
 
-    // Aggregate to find the top selling categories
+    
     const topSellingCategories = await orderModel.aggregate([
-      { $unwind: "$products" }, // Split orders into individual products
+      { $unwind: "$products" }, 
       {
         $lookup: {
           from: "products",
@@ -234,8 +234,8 @@ const Loaddashboard = async (req, res, next) => {
           foreignField: "_id",
           as: "product",
         },
-      }, // Lookup products collection to get product details
-      { $unwind: "$product" }, // Unwind the product array
+      }, 
+      { $unwind: "$product" },
       {
         $lookup: {
           from: "categories",
@@ -243,19 +243,20 @@ const Loaddashboard = async (req, res, next) => {
           foreignField: "_id",
           as: "category",
         },
-      }, // Lookup categories collection to get category details
-      { $unwind: "$category" }, // Unwind the category array
+      }, 
+      
+      { $unwind: "$category" }, 
       {
         $group: {
           _id: "$category._id",
           totalQuantity: { $sum: "$products.quantity" },
         },
-      }, // Group by categoryId and sum quantities
-      { $sort: { totalQuantity: -1 } }, // Sort by total quantity descending
-      { $limit: 10 }, // Limit to top 10 categories
+      },
+      { $sort: { totalQuantity: -1 } }, 
+      { $limit: 10 },
     ]);
 
-    // Fetch details of the top selling categories
+  
     const topSellingCategoriesData = await category.find({
       _id: { $in: topSellingCategories.map((cat) => cat._id) },
     });
@@ -263,7 +264,7 @@ const Loaddashboard = async (req, res, next) => {
     res.render("admin/admin-dashboard", {
       salesDetails: salesDetails,
       products: products,
-      categories: categories, // Pass categories to the rendering context
+      categories: categories,
       productsData: productsData,
       topSellingCategories: topSellingCategoriesData,
       topSellingProducts: topSellingProducts,
@@ -346,7 +347,7 @@ const checkAdmin = async (req, res) => {
       }).catch(error=>console.error("mongoose.findOne error:",error))
       console.log(loggedAdmin);
       if (!loggedAdmin) {
-        // If no admin found with the provided email
+       
         res.render('admin/admin-login',{errmessage:"wrong Email"})
       }
       if(logpassword===loggedAdmin.password){
