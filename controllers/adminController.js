@@ -399,8 +399,8 @@ const deleteImage = async (req,res)=>{
 
     const updatedProduct = await product.findByIdAndUpdate(
       {_id:productId},
-      { $pull: { image: image } }, // Use $pull to remove the specified image from the images array
-      { new: true } // Set { new: true } to return the updated document after the update operation
+      { $pull: { image: image } }, 
+      { new: true } 
   );
   
   fs.unlink("public/uploads/" + image, (err) => {
@@ -423,72 +423,70 @@ const deleteImage = async (req,res)=>{
 }
 
 const showChart = async (req, res) => {
-  console.log("varunille??/")
+ 
   try {
-    console.log("uuu")
+   
     if (req.query.msg) {
-      console.log("msg",req.query.msg)
-      console.log("yes")
-      // Aggregate monthly sales data
+    
+     
       const monthlySalesData = await orderModel.aggregate([
         {
-          $match: { "products.status": "delivered" }, // Consider only delivered orders
+          $match: { "products.status": "delivered" }, 
         },
         {
           $group: {
-            _id: { $month: "$orderedOn" }, // Group by month
-            totalAmount: { $sum: "$totalAmount" }, // Calculate total sales amount for each month
+            _id: { $month: "$orderedOn" },
+            totalAmount: { $sum: "$totalAmount" }, 
           },
         },
         {
-          $sort: { _id: 1 }, // Sort by month
+          $sort: { _id: 1 },
         },
       ]);
-      console.log("mont")
-      console.log("------mon",monthlySalesData);
+      
 
-      // Aggregate daily sales data
+      
       const dailySalesData = await orderModel.aggregate([
         {
-          $match: { "products.status": "delivered" }, // Consider only delivered orders
+          $match: { "products.status": "delivered" }, 
         },
         {
           $group: {
-            _id: { $dayOfMonth: "$orderedOn" }, // Group by day of month
-            totalAmount: { $sum: "$totalAmount" }, // Calculate total sales amount for each day
+            _id: { $dayOfMonth: "$orderedOn" }, 
+            totalAmount: { $sum: "$totalAmount" },
           },
         },
         {
-          $sort: { _id: 1 }, // Sort by day of month
+          $sort: { _id: 1 },
         },
       ]);
       console.log("daily",dailySalesData);
 
       const orderStatuses = await orderModel.aggregate([
         {
-          $unwind: "$products", // Unwind the products array
+          $unwind: "$products", 
         },
         {
           $group: {
-            _id: "$products.status", // Group by order status
-            count: { $sum: 1 }, // Count occurrences of each status
+            _id: "$products.status", 
+            count: { $sum: 1 }, 
           },
         },
       ]);
       console.log("order",orderStatuses);
 
-      // Map order statuses to object format
+     
       const eachOrderStatusCount = {};
       orderStatuses.forEach((status) => {
         eachOrderStatusCount[status._id] = status.count;
       });
-      // console.log(eachOrderStatusCount);
+      
 
       res
         .status(200)
         .json({ monthlySalesData, dailySalesData, eachOrderStatusCount });
     }
-    console.log("check")
+   
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });

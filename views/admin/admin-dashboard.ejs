@@ -145,18 +145,7 @@
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
-                <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
-                    </div>
-                    <datalist id="search_terms">
-                        <option value="Products">
-                        <option value="New orders">
-                        <option value="Apple iphone">
-                        <option value="Ahmed Hassan">
-                    </datalist>
-                </form>
+               
             </div>
             <div class="col-nav">
                 <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
@@ -207,11 +196,11 @@
             </div>
         
             <div class="row d-flex justify-content-center">
-              <div class="col-lg-3">
+              <div class="col-lg-4">
                 <div class="card card-body mb-4">
                   <article class="icontext">
-                    <span class="icon icon-sm rounded-circle bg-primary-light"><i
-                        class="text-primary material-icons md-monetization_on"></i></span>
+                    <span class="icon icon-sm rounded-circle bg-primary-light">
+                        &#8377;</span>
                     <div class="text">
                       <h6 class="mb-1 card-title">Revenue</h6>
                       <% let totalRevenue=0; %>
@@ -228,7 +217,7 @@
                   </article>
                 </div>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-4">
                 <div class="card card-body mb-4">
                   <article class="icontext">
                     <span class="icon icon-sm rounded-circle bg-success-light"><i
@@ -244,7 +233,7 @@
                   </article>
                 </div>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-4">
                 <div class="card card-body mb-4">
                   <article class="icontext">
                     <span class="icon icon-sm rounded-circle bg-warning-light"><i
@@ -373,29 +362,28 @@
 
     <script>
     window.onload = function () {
-        alert("vichu")
+      
       fetch('/showChart?msg=hi', {
         method: 'post',
         headers: {
           "Content-Type": "application/json"
         },
-        // body: JSON.stringify({ msg: "hi" })
+        
       })
         .then(response => response.json())
         .then(data => {
-            alert("2vichu")
-            alert(data)
-        //   if (data.monthlySalesData && data.dailySalesData && data.eachOrderStatusCount) {
+          
+        
+          if (data.monthlySalesData && data.dailySalesData && data.eachOrderStatusCount) {
             console.log(data.monthlySalesData);
             console.log("daily",data.dailySalesData);
             console.log(data.eachOrderStatusCount);
 
-            // Call the chart function for line charts
+         
             chart(data.monthlySalesData, data.dailySalesData);
 
-            // Call a separate function for the pie chart
             pieChart(data.eachOrderStatusCount);
-          
+          }
         })
         .catch(error => {
           console.error('Error fetching data:', error);
@@ -411,17 +399,16 @@
 
   <script>
     function chart(monthlySalesData, dailySalesData) {
-        console.log("hhhh",monthlySalesData);
-        console.log("mmmmmmmmmmmmmm",dailySalesData);
-      // Fill in missing months with zero values
-      const allMonths = Array.from({ length: 12 }, (_, i) => i + 1); // Array representing all months (1 to 12)
+     
+     
+      const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
       const monthlyDataMap = new Map(monthlySalesData.map(item => [item._id, item.totalAmount]));
       const monthlyDataFilled = allMonths.map(month => ({ _id: month, totalAmount: monthlyDataMap.get(month) || 0 }));
       console.log("value",monthlyDataMap)
       console.log("valu",monthlyDataFilled)
 
 
-      // Monthly sales chart
+      
       if ($('#monthlyChart').length) {
         var monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
         var monthlyChart = new Chart(monthlyCtx, {
@@ -461,7 +448,6 @@
         });
       }
 
-      // Daily sales chart
       if ($('#dailyChart').length) {
         var dailyCtx = document.getElementById('dailyChart').getContext('2d');
         var dailyChart = new Chart(dailyCtx, {
@@ -479,12 +465,7 @@
                 'rgba(255, 159, 64, 0.7)'
             ],
               borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+             'rgba(75, 192, 192, 1)',
             ],
               data: dailySalesData.map(item => item.totalAmount)
             }]
