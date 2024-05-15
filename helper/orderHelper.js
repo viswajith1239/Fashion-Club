@@ -358,6 +358,12 @@ const placeOrder = (body, userId,coupon) => {
           }
         );
         const response = await orderModel.findOne({ _id: orderId });
+        let amountToReturn;
+        response.products.forEach(product=>{
+          if(product._id==singleOrderId){
+            amountToReturn = product.productPrice
+          }
+        })
         console.log("order id is",orderId)
         console.log("response issssssssssss",response.paymentMethod)
         if (response.paymentMethod == 'RazorPay') {
@@ -365,7 +371,7 @@ const placeOrder = (body, userId,coupon) => {
           console.log("price issssssssssssssss",price)
           const walletUpdation = await walletHelper.walletAmountAdding(
             response.user,
-            response.totalAmount
+            amountToReturn
           );
         }
   
@@ -389,9 +395,11 @@ const placeOrder = (body, userId,coupon) => {
             as: "productDetails",
           },
         },
+        { $sort: { orderedOn: -1 } } 
       ]);
-  
+      console.log("jjjj",result);
       return result;
+
     } catch (error) {
       console.log("Error:", error);
       throw error;

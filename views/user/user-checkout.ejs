@@ -724,6 +724,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="container mt-5">
+                            <% if (userData.address.length > 0) { %>
                             <h4>Saved Address</h4>
                             <div class="row gy-4">
                                 <% userData.address.forEach(element=> { %>
@@ -754,6 +755,10 @@
                                     </div>
                                     <% }) %>
                             </div>
+                            <% } else { %>
+                                <h4>No Saved Addresses</h4>
+                                <p>Please add a new address to proceed with your order.</p>
+                            <% } %>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -1134,7 +1139,7 @@
     </script>
     
 
-<script>
+<!-- <script>
      function removeCoupon(Coupon,userId) {
       let coupon = Coupon;
       console.log(coupon);  
@@ -1150,7 +1155,44 @@
         }
       });
     }
-    </script>
+    </script> -->
+
+    <script>
+        function removeCoupon(Coupon, userId) {
+          let coupon = Coupon;
+          $.ajax({
+            url: `/removeCoupon?coupon=${coupon}&userId=${userId}`,
+            type: 'POST',
+            success: function(response) {
+              console.log(response);
+              Toastify({
+                text: "Coupon removed successfully!",
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                backgroundColor: "green",
+              }).showToast();
+      
+              $('#couponAmountText').text('No Coupons Applied');
+      
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
+            },
+            error: function(xhr, status, error) {
+              console.error('Error removing coupon:', error);
+              Toastify({
+                text: "Error removing coupon",
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                backgroundColor: "red",
+              }).showToast();
+            }
+          });
+        }
+      </script>
+      
 
 
 <script>
@@ -1272,6 +1314,16 @@
             let code = document.getElementById("couponCodeTable").textContent.trim()
             console.log("thisis code",code);
             const totalAmount = document.getElementById("totalAmount").textContent;
+            if (!address) {
+                Toastify({
+                text: "Address not added. Please add an address.",
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                backgroundColor: "red",
+                }).showToast();
+                return; 
+            }
 
             const data = {
               addressId: address,
@@ -1458,7 +1510,7 @@
                         }).showToast();
                         setTimeout(() => {
                             location.reload();
-                        }, 3000);
+                        }, 1000);
 
 
                     } else {

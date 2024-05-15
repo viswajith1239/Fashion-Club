@@ -417,7 +417,7 @@ const placeOrder = async (req, res) => {
       const startIndex = (page-1) * 6;
       const endIndex = page*6;
       orderHelper .salesReport().then((response) => {
-          console.log("this is respos",response);
+          
           response.forEach((order) => {
             const orderDate = new Date(order.orderedOn);
             const formattedDate = orderDate.toLocaleDateString("en-GB", {
@@ -427,6 +427,7 @@ const placeOrder = async (req, res) => {
             });
             order.orderedOn = formattedDate;
           });
+          console.log("this is respos",response);
           const productcount= response.length
           const totalPage = Math.ceil(productcount/6);
           response = response.slice(startIndex,endIndex)
