@@ -339,13 +339,15 @@ const editProductLoad = async (req, res) => {
 const checkAdmin = async (req, res) => {
  
   const logemail = req.body.email
+  console.log(logemail);
   const logpassword = req.body.password
+  console.log('pass',logpassword);
   try {
       const loggedAdmin = await admin.findOne({
-          email: logemail,
+        email: logemail
         
       }).catch(error=>console.error("mongoose.findOne error:",error))
-      console.log(loggedAdmin);
+      console.log('admin detais is',loggedAdmin);
       if (!loggedAdmin) {
        
         res.render('admin/admin-login',{errmessage:"wrong Email"})

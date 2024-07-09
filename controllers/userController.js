@@ -48,11 +48,13 @@ const createUser = async (req, res) => {
 const checkUser = async (req, res) => {
     
     const logemail = req.body.email
+    console.log('............',logemail)
     const logpassword = req.body.password
     try {
         const loggeduser = await user.findOne({
-            email: logemail,
+            email:logemail,
         })
+        console.log('the user details is',loggeduser)
         if(!loggeduser){
             res.render("user/login",{errmessage:"wrong Email"})
         }else{

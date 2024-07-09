@@ -6,8 +6,9 @@ const path = require('path')
 const session = require("express-session")
 const nocache = require("nocache")
 const flash = require("express-flash")
-const connectDB=require("./database/mongoose")
+// const connectDB=require("./database/mongoose")
 const methodoverride=require('method-override');
+const  mongoose  = require('mongoose')
 
 
 
@@ -15,6 +16,7 @@ const methodoverride=require('method-override');
 
 const app = express()
 const PORT = 3002
+mongoose.connect("mongodb://localhost:27017/FashionClub")
 app.use(express.urlencoded({ extended: true }))
 app.use("/public", express.static(path.join(__dirname, "/public")))
 
