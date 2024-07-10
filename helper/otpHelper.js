@@ -2,6 +2,7 @@ const nodemailer=require('nodemailer')
 const user = require("../models/userModel")
 const userController=require('../controllers/userController')
 const bcrypt=require('bcrypt')
+require("dotenv").config()
 // const flash = require('connect-flash');
 
 function generateotp(){
@@ -15,12 +16,14 @@ const transporter=nodemailer.createTransport({
   }  
 })
 
+
+
 const sentotp=(req,res)=>{
     try{
        
-        const {name,email,mobile,password}=req.body;
+        const {name,email,mobile,password,password1}=req.body;
 
-        req.session.insertData={name,email,mobile,password}
+        req.session.insertData={name,email,mobile,password,password1}
         console.log(req.session.insertData);
         req.session.storedEmail=email;
 
