@@ -16,7 +16,15 @@ const  mongoose  = require('mongoose')
 
 const app = express()
 const PORT = 3002
-mongoose.connect("mongodb://localhost:27017/FashionClub")
+mongoose.connect(process.env.DB_URL,{
+})
+.then(()=>{
+    console.log("mongodb connected");
+    
+}).catch((error)=>{
+    console.error(error);
+    
+})
 app.use(express.urlencoded({ extended: true }))
 app.use("/public", express.static(path.join(__dirname, "/public")))
 
